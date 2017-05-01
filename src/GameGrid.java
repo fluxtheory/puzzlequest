@@ -8,6 +8,8 @@ import java.util.ArrayList;
  * 2 = Crate
  * 3 = Objective
  * 4 = Wall
+ * We need Player on Objective
+ *     and Crate on Objective
  */
 public class GameGrid {
 	ArrayList<ArrayList<Integer>> grid;
