@@ -15,7 +15,8 @@ public class WarehouseBoss {
 
 	public static void main(String argv[]){
 		WarehouseBoss wb = new WarehouseBoss();
-		
+		wb.getBe().loadLevel(2);
+		wb.getBe().printLevel();
 	}
 
 	public FrontEnd getFe() {

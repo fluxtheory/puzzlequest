@@ -12,7 +12,9 @@ import java.util.ArrayList;
  *     and Crate on Objective
  */
 public class GameGrid {
-	ArrayList<ArrayList<Integer>> grid;
+	private ArrayList<ArrayList<Integer>> grid;
+	private int rowCount;
+	private int colCount;
 	
 	/**
 	 * Constructor for the gameGrid class
@@ -21,29 +23,113 @@ public class GameGrid {
 	 * @param c The number of columns
 	 */
 	public GameGrid(int r, int c){
-		grid = new ArrayList<ArrayList<Integer>>(r);
+		this.grid = new ArrayList<ArrayList<Integer>>(r);
 		
-		// Add in rows of array list
-		for(int i = 0; i < r; i++){
-			grid.add(new ArrayList<Integer>());
-		}
+		rowCount = 0;
+		colCount = 0;
 		
-		for(ArrayList<Integer> col: grid){
-			for(int i = 0; i< c; i++){
-				col.add(0);
-			}
-		}
+		this.addRow(r, 0);
+		this.addCol(c, 0);
+	}
+	
+	public GameGrid(){
+		this.grid = new ArrayList<ArrayList<Integer>>();
+		rowCount = 0;
+		colCount = 0;
+		
 	}
 	
 	/**
 	 * Prints the layout of the gamegrid into console, useful for debugging.
 	 */
 	public void printGrid(){
-		for(ArrayList<Integer> row: grid){
+		for(ArrayList<Integer> row: this.grid){
 			for(Integer col: row){
 				System.out.print(col + " ");
 			}
 			System.out.print("\n");
 		}
 	}
+	
+	/**
+	 * addRow adds count rows of 0s in offset
+	 * @param count
+	 * @param offset
+	 */
+	public void addRow(int count, int offset){
+		
+		for(int i = 0; i < count; i++){
+			this.grid.add(offset, new ArrayList<Integer>());
+			for(int j = 0; j < colCount; j++){
+				this.grid.get(offset).add(0);
+			}
+		}
+		
+		this.rowCount += count;
+	}
+	
+	/**
+	 * addRow adds the specified arraylist into offset.
+	 * @param row
+	 * @param offset
+	 */
+	public void addRow(ArrayList<Integer> row, int offset){
+		this.grid.add(offset, row);
+		this.rowCount++;
+	}
+	
+	/**
+	 * addCol adds count columns of 0s into offset
+	 * @param count
+	 * @param offset
+	 */
+	public void addCol(int count, int offset){
+		for(int i = 0; i < rowCount; i++){
+			for(int j = 0; j < count; j++){
+				this.grid.get(i).add(offset, 0);
+			}
+		}
+		
+		this.colCount += count;
+	}
+	
+	/**
+	 * addCol adds the specified arrayList of integers into the offset
+	 * @param col
+	 * @param offset
+	 */
+	public void addCol(ArrayList<Integer> col, int offset){
+		for(int i = 0; i < rowCount; i++){
+			this.grid.get(i).add(offset, col.get(i));
+		}
+		this.colCount++;
+	}
+
+	
+	// Getters and Setters
+	public ArrayList<ArrayList<Integer>> getGrid() {
+		return grid;
+	}
+
+	public void setGrid(ArrayList<ArrayList<Integer>> grid) {
+		this.grid = grid;
+	}
+
+	public int getRowCount() {
+		return rowCount;
+	}
+
+	public void setRowCount(int rowCount) {
+		this.rowCount = rowCount;
+	}
+
+	public int getColCount() {
+		return colCount;
+	}
+
+	public void setColCount(int colCount) {
+		this.colCount = colCount;
+	}
+	
+	
 }

@@ -11,8 +11,8 @@ public class BackEnd {
 	private LevelManager lm;
 	
 	// Methods
-	public void loadTestLevel(){
-		gg = lm.loadTestLevel();
+	public void loadEmptyLevel(){
+		gg = lm.loadEmptyLevel();
 	}
 	
 	public void loadLevel(int level){

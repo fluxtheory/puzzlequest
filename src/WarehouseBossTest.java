@@ -8,7 +8,7 @@ public class WarehouseBossTest {
 	public void test() {
 		
 		WarehouseBoss wb = new WarehouseBoss();
-		wb.getBe().loadTestLevel();
+		wb.getBe().loadEmptyLevel();
 		wb.getBe().printLevel();
 		wb.getFe().RenderGrid(wb.getBe().getGg());
 		
