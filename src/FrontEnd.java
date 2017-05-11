@@ -1,7 +1,4 @@
 
-/*	Note:
- * 
- */
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -17,8 +14,12 @@ import javax.swing.border.EmptyBorder;
 	
 	
 public class FrontEnd extends JFrame{
+	
+	private static final int sml = 1;
+	private static final int med = 2;
+	private static final int lrg = 4;
 		
-		public puzzlequest(){
+		public FrontEnd(){
 			initUI();
 		}
 		
@@ -27,7 +28,7 @@ public class FrontEnd extends JFrame{
 			setTitle("Puzzle Quest");
 			setDefaultCloseOperation(EXIT_ON_CLOSE);
 			setLocationByPlatform(true);
-			setSize(800, 1200);
+			setSize(800, 800);
 	        setLocationRelativeTo(null);
 	        startScreen();
 		}
@@ -37,7 +38,8 @@ public class FrontEnd extends JFrame{
 			
 			JButton newG = new JButton("NEW GAME");
 			newG.addActionListener((ActionEvent event)-> {
-				createGameSpace();
+				difficultyPicker();
+				
 			});
 			
 			JButton loadSave = new JButton("LOAD GAME");
@@ -56,15 +58,16 @@ public class FrontEnd extends JFrame{
 			
 			
 			startpanel.setLayout(layout);
-			startpanel.setBorder(new EmptyBorder(new Insets(150,200,150,200)));
+			startpanel.setBorder(new EmptyBorder(new Insets(250,50,150,200)));
 			startpanel.add(newG);
 			startpanel.add(Box.createRigidArea(new Dimension(0,15)));
 			startpanel.add(loadSave);
 			startpanel.add(Box.createRigidArea(new Dimension(0,15)));
 			startpanel.add(exit);
 			
-			add(startpanel);	
+			setContentPane(startpanel);
 			pack();
+			validate();
 			
 			
 			//minimum size
@@ -84,7 +87,11 @@ public class FrontEnd extends JFrame{
 			
 			JMenuItem newGame = new JMenuItem("New Game");
 			newGame.addActionListener((ActionEvent event)-> {
-				createGameSpace();
+				//check if game is running
+				//if yes, throw warning page.
+				//if not, go to diff
+				
+				//createGameSpace();
 			});
 			
 			JMenuItem saveGame = new JMenuItem("Save Game");
@@ -123,12 +130,52 @@ public class FrontEnd extends JFrame{
 			
 		}
 		
-		public void createGameSpace(){
-			Grid grid = new Grid();
+		public void difficultyPicker(){
+			
+			JPanel diff = new JPanel();
+			diff.setBorder(new EmptyBorder(150,150,10,10));
+			BoxLayout layout = new BoxLayout(diff,BoxLayout.Y_AXIS);
+			
+			JButton easy = new JButton("Easy");
+			easy.addActionListener((ActionEvent event) -> {
+				createGameSpace(sml);
+			});
+			
+			JButton medium = new JButton("Medium");
+			medium.addActionListener((ActionEvent event) -> {
+				createGameSpace(med);
+			});
+			
+			JButton hard = new JButton("Hard");
+			hard.addActionListener((ActionEvent event) -> {
+				createGameSpace(lrg);
+			});
+			
+			JButton back = new JButton("Back");
+			back.addActionListener((ActionEvent event) -> {
+				startScreen();
+			});
+			
+			diff.setLayout(layout);
+			diff.add(easy);
+			diff.add(Box.createRigidArea(new Dimension(0,15)));
+			diff.add(medium);
+			diff.add(Box.createRigidArea(new Dimension(0,15)));
+			diff.add(hard);
+			diff.add(Box.createRigidArea(new Dimension(0,40)));
+			diff.add(back);
+			
+			setContentPane(diff);
+			validate();
+			//;
+		}
+		
+		public void createGameSpace(int size){
+			Grid grid = new Grid(size);
 			
 			setContentPane(grid);
 			validate();
-			setSize(new Dimension(800,1200));
+			setSize(new Dimension(800,800));
 		}
 		
 		public void aboutPage(){
@@ -140,6 +187,8 @@ public class FrontEnd extends JFrame{
 			//audio
 			//map size
 			//game resolution etc
+			//disable grid
+			//num crates
 			//other features
 		}
 		
@@ -154,10 +203,10 @@ public class FrontEnd extends JFrame{
 		}
 		
 		public static void main(String[] args){
-			FrontEnd start = new puzzlequest();
+			FrontEnd start = new FrontEnd();
 			start.setVisible(true);
 		}
 		
-	}
+	
 	
 }
