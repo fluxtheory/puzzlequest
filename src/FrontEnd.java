@@ -1,11 +1,6 @@
 
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -15,8 +10,8 @@ import javax.swing.border.EmptyBorder;
 	
 public class FrontEnd extends JFrame{
 	
-	private static final int sml = 1;
-	private static final int med = 2;
+	private static final int sml = 5;
+	private static final int med = 10;
 	private static final int lrg = 4;
 		
 		public FrontEnd(){
@@ -175,7 +170,8 @@ public class FrontEnd extends JFrame{
 			
 			setContentPane(grid);
 			validate();
-			setSize(new Dimension(800,800));
+			setSize(new Dimension(600,600));
+			setResizable(false);
 		}
 		
 		public void aboutPage(){
@@ -200,11 +196,6 @@ public class FrontEnd extends JFrame{
 		public void loadGame(){
 			JFileChooser c = new JFileChooser();
 			c.showOpenDialog(this);
-		}
-		
-		public static void main(String[] args){
-			FrontEnd start = new FrontEnd();
-			start.setVisible(true);
 		}
 		
 	
