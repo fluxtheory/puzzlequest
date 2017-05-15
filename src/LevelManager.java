@@ -11,7 +11,7 @@ public class LevelManager {
 
 	
 	public GameGrid loadEmptyLevel(){
-		GameGrid gg = new GameGrid(5, 5);
+		GameGrid gg = new GameGrid();
 		return gg;
 	}
 	
@@ -27,10 +27,11 @@ public class LevelManager {
 		File f = new File(System.getProperty("user.dir") + "\\levels\\" + Integer.toString(level) + ".wml");
 		try{
 			sc = new Scanner(f);
-			gg = new GameGrid(0, 0);
+			gg = new GameGrid();
 			while(sc.hasNextLine()){
 				String line = sc.nextLine();
-				gg.addRow(this.StringToArrayList_Int(line), gg.getRowCount());
+				gg.addRow();
+				gg.setRow(gg.getRowCount(), this.StringToArrayList_Int(line));
 			}
 		}
 		
