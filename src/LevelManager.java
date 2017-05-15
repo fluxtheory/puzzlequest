@@ -24,7 +24,7 @@ public class LevelManager {
 	public GameGrid loadLevel(int level){
 		GameGrid gg = null;
 		Scanner sc = null;
-		File f = new File(System.getProperty("user.dir") + "\\levels\\" + Integer.toString(level) + ".wml");
+		File f = new File("levels/" + level + ".map");
 		try{
 			sc = new Scanner(f);
 			gg = new GameGrid(0, 0);
