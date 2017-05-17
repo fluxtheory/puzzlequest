@@ -134,17 +134,17 @@ public class FrontEnd extends JFrame{
 			
 			JButton easy = new JButton("Easy");
 			easy.addActionListener((ActionEvent event) -> {
-				createGameSpace(sml);
+				createGameSpace(sml, 1);
 			});
 			
 			JButton medium = new JButton("Medium");
 			medium.addActionListener((ActionEvent event) -> {
-				createGameSpace(med);
+				createGameSpace(med, 2);
 			});
 			
 			JButton hard = new JButton("Hard");
 			hard.addActionListener((ActionEvent event) -> {
-				createGameSpace(lrg);
+				createGameSpace(lrg, 3);
 			});
 			
 			JButton back = new JButton("Back");
@@ -166,8 +166,8 @@ public class FrontEnd extends JFrame{
 			//;
 		}
 		
-		public void createGameSpace(int size){
-			Grid grid = new Grid(size);
+		public void createGameSpace(int size, int level){
+			Grid grid = new Grid(size, level);
 			
 			setContentPane(grid);
 			validate();
