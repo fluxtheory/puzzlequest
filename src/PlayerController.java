@@ -9,8 +9,8 @@ public class PlayerController {
 	GameGrid ggtemp;
 	private int[] player = new int[2];
 	
-	public PlayerController(GameGrid gg){
-		this.ggtemp = gg;
+	public PlayerController(GameGrid gg, GameGrid ggtemp){
+		this.ggtemp = ggtemp;
 		this.player = gg.getPlayerCoordinate();
 		this.manRaw = player[0];
 		this.manCol = player[1];
@@ -166,7 +166,7 @@ public class PlayerController {
 				gg.SetCoordinateValue(manRaw - 1, manCol, 8);
 				gg.SetCoordinateValue(manRaw - 2, manCol, 9);
 				manRaw--;
-			}else if(gg.getCoordinateValue(manRaw - 1, manCol) == 2){
+			}else if(gg.getCoordinateValue(manRaw - 2, manCol) == 2){
 				if(ggtemp.getCoordinateValue(manRaw, manCol) == 4 ||
 					ggtemp.getCoordinateValue(manRaw, manCol) == 9 ){
 					gg.SetCoordinateValue(manRaw, manCol, 4);
