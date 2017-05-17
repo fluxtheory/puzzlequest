@@ -11,7 +11,7 @@ import javax.swing.border.EmptyBorder;
 public class FrontEnd extends JFrame{
 	
 	private static final int sml = 5;
-	private static final int med = 10;
+	private static final int med = 14;
 	private static final int lrg = 4;
 		
 		public FrontEnd(){
@@ -82,6 +82,7 @@ public class FrontEnd extends JFrame{
 			
 			JMenuItem newGame = new JMenuItem("New Game");
 			newGame.addActionListener((ActionEvent event)-> {
+				difficultyPicker();
 				//check if game is running
 				//if yes, throw warning page.
 				//if not, go to diff
