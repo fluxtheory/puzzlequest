@@ -1,17 +1,17 @@
-
-
 import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 	
 	
-public class FrontEnd extends JFrame{
+public class FrontEnd extends JFrame {
 	
 	private static final int sml = 5;
-	private static final int med = 14;
+	private static final int med = 10;
 	private static final int lrg = 4;
 		
 		public FrontEnd(){
@@ -82,7 +82,6 @@ public class FrontEnd extends JFrame{
 			
 			JMenuItem newGame = new JMenuItem("New Game");
 			newGame.addActionListener((ActionEvent event)-> {
-				difficultyPicker();
 				//check if game is running
 				//if yes, throw warning page.
 				//if not, go to diff
@@ -134,17 +133,17 @@ public class FrontEnd extends JFrame{
 			
 			JButton easy = new JButton("Easy");
 			easy.addActionListener((ActionEvent event) -> {
-				createGameSpace(sml, 1);
+				createGameSpace(sml);
 			});
 			
 			JButton medium = new JButton("Medium");
 			medium.addActionListener((ActionEvent event) -> {
-				createGameSpace(med, 2);
+				createGameSpace(med);
 			});
 			
 			JButton hard = new JButton("Hard");
 			hard.addActionListener((ActionEvent event) -> {
-				createGameSpace(lrg, 3);
+				createGameSpace(lrg);
 			});
 			
 			JButton back = new JButton("Back");
@@ -166,9 +165,10 @@ public class FrontEnd extends JFrame{
 			//;
 		}
 		
-		public void createGameSpace(int size, int level){
-			Grid grid = new Grid(size, level);
-			
+		public void createGameSpace(int size){
+			Grid grid = new Grid(size, 2);
+			add(grid);
+			grid.requestFocus();
 			setContentPane(grid);
 			validate();
 			setSize(new Dimension(600,600));
