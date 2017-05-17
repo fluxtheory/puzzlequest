@@ -15,9 +15,11 @@ public class Grid extends JPanel implements KeyListener{
 
 	
 	LevelManager lm = new LevelManager();
+	LevelManager lmtemp = new LevelManager();
 	GameGrid gg = lm.loadLevel(2);
+	GameGrid ggtemp = lm.loadLevel(2);
 	Image[] myImage = new Image[10];
-	PlayerController pl = new PlayerController(gg);
+	PlayerController pl = new PlayerController(gg, ggtemp);
 	
 	
 	public Grid(int size, int level){
@@ -45,7 +47,6 @@ public class Grid extends JPanel implements KeyListener{
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		System.out.println("flag1");
 		if(e.getKeyCode()==KeyEvent.VK_UP){
 			pl.moveUp(gg);
 			repaint();
@@ -60,7 +61,6 @@ public class Grid extends JPanel implements KeyListener{
 		}
 		if(e.getKeyCode()==KeyEvent.VK_RIGHT){
 			pl.moveRight(gg);
-			gg.printGrid();
 			repaint();
 		}
 		if(gg.iswin()){
