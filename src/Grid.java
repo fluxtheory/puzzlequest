@@ -27,7 +27,7 @@ public class Grid extends JPanel{
 	public void paint(Graphics g){
 		for(int i = 0; i < 20; i++){
 			for(int j = 0; j < 20; j++){
-				g.drawImage(myImage[gg.getGrid().get(i).get(j)], i*30, j*30, this);
+				g.drawImage(myImage[gg.getGrid().get(i).get(j)], j*30, i*30, null);
 			}
 		}
 	}
