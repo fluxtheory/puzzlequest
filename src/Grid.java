@@ -22,7 +22,7 @@ public class Grid extends JPanel implements KeyListener{
 	PlayerController pl = new PlayerController(gg, ggtemp);
 	
 	
-	public Grid(int size, int level){
+	public Grid(int level){
 		setBounds(0,0,600,600);
 		addKeyListener(this);
 		setBackground(Color.WHITE);
