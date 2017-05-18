@@ -6,6 +6,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
 
+import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -23,16 +24,31 @@ public class Grid extends JPanel implements KeyListener{
 	
 	
 	public Grid(int level){
+		JButton redo = new JButton("Redo");
+		add(redo);
+		
 		setBounds(0,0,600,600);
 		addKeyListener(this);
-		setBackground(Color.WHITE);
 		for(int i =0; i < 10; i++){
 			myImage[i] = Toolkit.getDefaultToolkit().getImage("pic/"+ i + ".gif");
 		}
+		
 	
 	}
 	
-	public void paint(Graphics g){
+	
+	
+	
+	public void redo(){
+	// function stub	
+		
+		
+	}
+	
+	
+	
+	@Override
+	public void paintComponent(Graphics g){
 		for(int i = 0; i < 20; i++){
 			for(int j = 0; j < 20; j++){
 				g.drawImage(myImage[gg.getGrid().get(j).get(i)], i*30, j*30, this);
