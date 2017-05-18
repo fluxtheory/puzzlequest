@@ -9,11 +9,7 @@ import javax.swing.border.EmptyBorder;
 	
 	
 public class FrontEnd extends JFrame {
-	
-	private static final int sml = 5;
-	private static final int med = 10;
-	private static final int lrg = 4;
-		
+
 		public FrontEnd(){
 			initUI();
 		}
@@ -133,17 +129,17 @@ public class FrontEnd extends JFrame {
 			
 			JButton easy = new JButton("Easy");
 			easy.addActionListener((ActionEvent event) -> {
-				createGameSpace(sml);
+				createGameSpace();
 			});
 			
 			JButton medium = new JButton("Medium");
 			medium.addActionListener((ActionEvent event) -> {
-				createGameSpace(med);
+				createGameSpace();
 			});
 			
 			JButton hard = new JButton("Hard");
 			hard.addActionListener((ActionEvent event) -> {
-				createGameSpace(lrg);
+				createGameSpace();
 			});
 			
 			JButton back = new JButton("Back");
@@ -165,8 +161,8 @@ public class FrontEnd extends JFrame {
 			//;
 		}
 		
-		public void createGameSpace(int size){
-			Grid grid = new Grid(size, 2);
+		public void createGameSpace(){
+			Grid grid = new Grid(2);
 			add(grid);
 			grid.requestFocus();
 			setContentPane(grid);
