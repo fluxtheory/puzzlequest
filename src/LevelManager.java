@@ -17,7 +17,7 @@ public class LevelManager {
 	
 	/**
 	 * loadLevel loads a level into the gamegrid.
-	 * It reads the level from .wml files in levels directory.
+	 * It reads the level from .map files in levels directory.
 	 * @param level
 	 * @return
 	 */
