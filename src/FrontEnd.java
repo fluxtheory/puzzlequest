@@ -6,6 +6,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
@@ -37,7 +38,9 @@ import javafx.embed.swing.JFXPanel;
 	
 public class FrontEnd extends JFrame {
 	
-	private JPanel cards;
+	private JPanel panelContainer = new JPanel(new CardLayout());;
+	private JPanel homePanel;
+	private static int lastInt;
 	public MediaPlayer m;
 	
 		public FrontEnd(){
@@ -48,9 +51,9 @@ public class FrontEnd extends JFrame {
 		
 		public void initUI(){
 			
-			cards = new JPanel(new CardLayout());
+			
 			JPanel start = new startScreen();
-			cards.add(start);
+			panelContainer.add(start);
 			menuBar();
 			add(start);
 			setTitle("Puzzle Quest");
@@ -91,6 +94,7 @@ public class startScreen extends JPanel{    //add animated title      //RANDOM, 
 				System.out.println("Cant find image");
 				e1.printStackTrace();
 			}
+		
         imgSize = new Dimension(img.getWidth(),img.getHeight());
         setPreferredSize(imgSize);
         painter = new GameMenuPainter();
@@ -135,6 +139,7 @@ public class startScreen extends JPanel{    //add animated title      //RANDOM, 
                  focusedItem = null;
                  for (String text : menuItems) {
                      Rectangle bounds = menuButtons.get(text);
+
                      if (bounds.contains(e.getPoint())) {
                          focusedItem = text;
                          repaint();
@@ -148,23 +153,23 @@ public class startScreen extends JPanel{    //add animated title      //RANDOM, 
         addMouseListener(m);
         addMouseMotionListener(m);
         
-        
+        homePanel = (JPanel) getContentPane();
 	}
 	
-	@Override
-    public void invalidate() {
-        menuButtons = null;
-        super.invalidate();
-    }
-
-    @Override
-    public Dimension getPreferredSize() {
-        return imgSize;
-    }
-    
-    @Override
-    protected void paintComponent(Graphics g) {
-    	
+		@Override
+	    public void invalidate() {
+	        menuButtons = null;
+	        super.invalidate();
+	    }
+	
+	    @Override
+	    public Dimension getPreferredSize() {
+	        return imgSize;
+	    }
+	    
+	    @Override
+	    protected void paintComponent(Graphics g) {
+	    	
    
         
         super.paintComponent(g);
@@ -205,8 +210,6 @@ public class startScreen extends JPanel{    //add animated title      //RANDOM, 
 	
 }
 
-		
-	
 		public void menuBar(){
 			
 			JMenuBar menubar = new JMenuBar();
@@ -214,8 +217,12 @@ public class startScreen extends JPanel{    //add animated title      //RANDOM, 
 			file.setMnemonic(KeyEvent.VK_F);
 			
 			JMenuItem ret = new JMenuItem("Return");
-			ret.addActionListener((ActionEvent event)-> {
-				
+			ret.addActionListener((ActionEvent event)->{
+				setResizable(true);
+				setContentPane(homePanel);
+				setResizable(false);
+				pack();
+
 			});
 			
 			JMenuItem newGame = new JMenuItem("New Game");
@@ -267,7 +274,7 @@ public class startScreen extends JPanel{    //add animated title      //RANDOM, 
 		public void gameModePicker(){
 			
 			JPanel diff = new JPanel();
-			cards.add(diff);
+			panelContainer.add(diff);
 			diff.setBorder(new EmptyBorder(150,125,10,10));
 			diff.setBackground(Color.BLACK);
 			BoxLayout layout = new BoxLayout(diff,BoxLayout.Y_AXIS);
@@ -313,7 +320,7 @@ public class startScreen extends JPanel{    //add animated title      //RANDOM, 
 			
 			
 			Grid grid = new Grid(2);
-			cards.add(grid);
+			panelContainer.add(grid);
 			add(grid);
 			grid.requestFocus();
 			setContentPane(grid);
@@ -389,8 +396,15 @@ public class startScreen extends JPanel{    //add animated title      //RANDOM, 
 		
 		public void chooseMusic() throws InterruptedException{
 			Random randomGenerator = new Random();
+			
 		    int randomInt = randomGenerator.nextInt(7);
-		    //randomInt = 1;
+		    
+		    while(randomInt == lastInt){
+		    	randomInt = randomGenerator.nextInt(7);
+		    }
+		    
+		    lastInt = randomInt;
+		    
 		    String loc = "audio/"+ randomInt + ".mp3";
 		    
 		    Media song = new Media(new File(loc).toURI().toString());
