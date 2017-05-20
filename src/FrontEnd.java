@@ -1,4 +1,5 @@
 import java.awt.BorderLayout;
+import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -16,6 +17,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
+import java.util.concurrent.CountDownLatch;
 import java.awt.Rectangle;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -24,30 +27,52 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
-	
+
+import javafx.scene.Scene;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.embed.swing.JFXPanel;
 	
 public class FrontEnd extends JFrame {
 	
+	private JPanel cards;
+	public MediaPlayer m;
+	
 		public FrontEnd(){
+			JFXPanel fxPanel = new JFXPanel();
 			initUI();
+			
 		}
 		
 		public void initUI(){
+			
+			cards = new JPanel(new CardLayout());
+			JPanel start = new startScreen();
+			cards.add(start);
 			menuBar();
-			add(new startScreen());
+			add(start);
 			setTitle("Puzzle Quest");
 			setDefaultCloseOperation(EXIT_ON_CLOSE);
 			setLocationByPlatform(true);
 	        //setLocationRelativeTo(null);
 	        setResizable(false);
 	        pack();
-	        
+
+	        try {
+				chooseMusic();
+				m.play();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 	        
 		}
 		
 
 
-public class startScreen extends JPanel{    //add animated title      //RANDOM, HAVE A FEW SETS   //SAME FOR BACKGROUND, ART ASSETS?
+public class startScreen extends JPanel{    //add animated title      //RANDOM, HAVE A FEW SETS   //SAME FOR BACKGROUND, ART ASSETS?  //ADD AUDIO
 	
 	private List<String> menuItems;
     private String focusedItem;
@@ -86,7 +111,8 @@ public class startScreen extends JPanel{    //add animated title      //RANDOM, 
                         newItem = text;
                         
                         if (newItem == "Start Game"){
-                    		gameModePicker();  
+                    		gameModePicker();
+              
                     		
                     	} else if(newItem == "Load Game"){
                     		loadGame();
@@ -187,9 +213,9 @@ public class startScreen extends JPanel{    //add animated title      //RANDOM, 
 			JMenu file = new JMenu("File");
 			file.setMnemonic(KeyEvent.VK_F);
 			
-			JMenuItem titleScreen = new JMenuItem("Return");
-			titleScreen.addActionListener((ActionEvent event)-> {
-				add(new startScreen());
+			JMenuItem ret = new JMenuItem("Return");
+			ret.addActionListener((ActionEvent event)-> {
+				
 			});
 			
 			JMenuItem newGame = new JMenuItem("New Game");
@@ -212,7 +238,7 @@ public class startScreen extends JPanel{    //add animated title      //RANDOM, 
 			exit.addActionListener((ActionEvent event)-> {
 				System.exit(0); 
 			});
-			file.add(titleScreen);
+			file.add(ret);
 			file.addSeparator();
 			file.add(newGame);
 			file.add(saveGame);
@@ -241,6 +267,7 @@ public class startScreen extends JPanel{    //add animated title      //RANDOM, 
 		public void gameModePicker(){
 			
 			JPanel diff = new JPanel();
+			cards.add(diff);
 			diff.setBorder(new EmptyBorder(150,125,10,10));
 			diff.setBackground(Color.BLACK);
 			BoxLayout layout = new BoxLayout(diff,BoxLayout.Y_AXIS);
@@ -276,17 +303,33 @@ public class startScreen extends JPanel{    //add animated title      //RANDOM, 
 			
 			setContentPane(diff);
 			validate();
+			
+			
 			//;
 		}
 		
 		public void createGameSpace(){
+			
+			
+			
 			Grid grid = new Grid(2);
+			cards.add(grid);
 			add(grid);
 			grid.requestFocus();
 			setContentPane(grid);
 			validate();
 			setSize(new Dimension(600,600));
 			setResizable(false);
+			
+			try {
+				m.stop();
+				chooseMusic();
+				m.play();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
 		}
 		
 		public void aboutPage(){
@@ -342,6 +385,21 @@ public class startScreen extends JPanel{    //add animated title      //RANDOM, 
 			
 		}
 		
-	
+		
+		
+		public void chooseMusic() throws InterruptedException{
+			Random randomGenerator = new Random();
+		    int randomInt = randomGenerator.nextInt(7);
+		    //randomInt = 1;
+		    String loc = "audio/"+ randomInt + ".mp3";
+		    
+		    Media song = new Media(new File(loc).toURI().toString());
+		    m = new MediaPlayer(song);
+		    
+
+ 
+		}
+		
+		
 	
 }
