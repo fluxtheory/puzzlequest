@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,6 +15,7 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,6 +23,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.CountDownLatch;
 import java.awt.Rectangle;
+import java.awt.Toolkit;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
@@ -41,6 +44,7 @@ public class FrontEnd extends JFrame {
 	private JPanel panelContainer = new JPanel(new CardLayout());;
 	private JPanel homePanel;
 	private static int lastInt;
+	private boolean currentGame;
 	public MediaPlayer m;
 	
 		public FrontEnd(){
@@ -75,12 +79,13 @@ public class FrontEnd extends JFrame {
 		
 
 
-public class startScreen extends JPanel{    //add animated title      //RANDOM, HAVE A FEW SETS   //SAME FOR BACKGROUND, ART ASSETS?  //ADD AUDIO
+public class startScreen extends JPanel{     
 	
 	private List<String> menuItems;
     private String focusedItem;
 	private Map<String, Rectangle> menuButtons;
 	private BufferedImage img;
+	private Image[] titles = new Image[14];
     private Dimension imgSize;
     private GameMenuPainter painter;
     
@@ -88,12 +93,20 @@ public class startScreen extends JPanel{    //add animated title      //RANDOM, 
 	public startScreen(){
 		
 		try {
-				img = ImageIO.read(new File("unnamed.png"));
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				System.out.println("Cant find image");
-				e1.printStackTrace();
-			}
+			img = ImageIO.read(new File("unnamed.png"));
+
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			System.out.println("Cant find background image");
+			e1.printStackTrace();
+		}
+		
+		for (int i = 0; i <= 13; i++){
+			String loc = "pic/TITLE" + i + ".gif";
+			//System.out.println(loc);
+			titles[i] = Toolkit.getDefaultToolkit().getImage(loc);
+		}
+		
 		
         imgSize = new Dimension(img.getWidth(),img.getHeight());
         setPreferredSize(imgSize);
@@ -200,7 +213,11 @@ public class startScreen extends JPanel{    //add animated title      //RANDOM, 
         
         g2d.drawImage(img,0,0,null);
         
-        for (String text : menuItems) {
+        Random ng = new Random();
+        
+        g2d.drawImage(titles[lastInt], 20, 45, this);
+        
+        for (String text : menuItems) {     //button drawers
             Rectangle bounds = menuButtons.get(text);
             boolean isFocused = text.equals(focusedItem);
             painter.paint(g2d, text, bounds, isFocused);
@@ -218,17 +235,37 @@ public class startScreen extends JPanel{    //add animated title      //RANDOM, 
 			
 			JMenuItem ret = new JMenuItem("Return");
 			ret.addActionListener((ActionEvent event)->{
+				
+				/*if(){ //check if in game, flash a warning dialogue      //back to title music.
+					
+				}*/
+				
+				currentGame = false;
 				setResizable(true);
 				setContentPane(homePanel);
 				setResizable(false);
 				pack();
+				
+				try {
+					m.stop();
+					chooseMusic();
+					m.play();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 
 			});
 			
 			JMenuItem newGame = new JMenuItem("New Game");
 			newGame.addActionListener((ActionEvent event)-> {
-				// check if in-game. throw up warning if player is in game.
-				//createGameSpace();
+				if(currentGame == true){
+					//create new JPanel
+					createGameSpace();
+				} else {
+					
+				}
+				
 			});
 			
 			JMenuItem saveGame = new JMenuItem("Save Game");
@@ -286,7 +323,7 @@ public class startScreen extends JPanel{    //add animated title      //RANDOM, 
 			
 			JButton medium = new JButton("TIMED PLAY");
 			medium.addActionListener((ActionEvent event) -> {
-				createGameSpace();
+				createGameSpace();    //new class?   an interface, then 3 classes that implement.    CoopGrid, TimedGrid, SoloGrid
 			});
 			
 			JButton hard = new JButton("CO-OP PLAY");
@@ -316,9 +353,7 @@ public class startScreen extends JPanel{    //add animated title      //RANDOM, 
 		}
 		
 		public void createGameSpace(){
-			
-			
-			
+
 			Grid grid = new Grid(2);
 			panelContainer.add(grid);
 			add(grid);
@@ -327,7 +362,7 @@ public class startScreen extends JPanel{    //add animated title      //RANDOM, 
 			validate();
 			setSize(new Dimension(600,600));
 			setResizable(false);
-			
+			currentGame = true;
 			try {
 				m.stop();
 				chooseMusic();
@@ -397,18 +432,24 @@ public class startScreen extends JPanel{    //add animated title      //RANDOM, 
 		public void chooseMusic() throws InterruptedException{
 			Random randomGenerator = new Random();
 			
-		    int randomInt = randomGenerator.nextInt(7);
+		    int randomInt = randomGenerator.nextInt(14);
 		    
 		    while(randomInt == lastInt){
-		    	randomInt = randomGenerator.nextInt(7);
+		    	randomInt = randomGenerator.nextInt(14);
 		    }
 		    
 		    lastInt = randomInt;
+		    String loc;
 		    
-		    String loc = "audio/"+ randomInt + ".mp3";
+		    if(currentGame == false){
+		    	loc = "audio/title.mp3";
+		    } else {
+		    	loc = "audio/"+ randomInt + ".mp3";
+		    }
 		    
 		    Media song = new Media(new File(loc).toURI().toString());
 		    m = new MediaPlayer(song);
+		    
 		    
 
  
