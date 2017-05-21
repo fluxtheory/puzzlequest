@@ -17,14 +17,14 @@ public class LevelManager {
 	
 	/**
 	 * loadLevel loads a level into the gamegrid.
-	 * It reads the level from .wml files in levels directory.
+	 * It reads the level from .map files in levels directory.
 	 * @param level
 	 * @return
 	 */
 	public GameGrid loadLevel(int level){
 		GameGrid gg = null;
 		Scanner sc = null;
-		File f = new File(System.getProperty("user.dir") + "\\levels\\" + Integer.toString(level) + ".wml");
+		File f = new File("levels/" + level + ".map");
 		try{
 			sc = new Scanner(f);
 			gg = new GameGrid();

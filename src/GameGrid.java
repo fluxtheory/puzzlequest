@@ -4,12 +4,15 @@ import java.util.ArrayList;
  * Gamegrid class holds information about the state of the game
  * 
  * 0 = Empty space
- * 1 = Player
- * 2 = Crate
- * 3 = Objective
- * 4 = Wall
- * 5 = Player on Objective
- * 6 = Crate on Objective
+ * 1 = Wall
+ * 2 = Ground
+ * 3 = Box
+ * 4 = Objective
+ * 5 = Player Down
+ * 6 = Player Left
+ * 7 = Player Right
+ * 8 = Player Up
+ * 9 = Crate on Objective
  */
 public class GameGrid {
 	private ArrayList<ArrayList<Integer>> grid;
@@ -46,7 +49,7 @@ public class GameGrid {
 	 * @return The value at the coordinate
 	 */
 	public Integer getCoordinateValue(int r, int c){
-		return this.grid.get(r - 1).get(c - 1);
+		return this.grid.get(r).get(c);
 	}
 	
 	/**
@@ -56,7 +59,7 @@ public class GameGrid {
 	 * @param value The value for the coordinate to be set to
 	 */
 	public void SetCoordinateValue(int r, int c, int value){
-		this.grid.get(r - 1).set(c - 1, value);
+		this.grid.get(r).set(c, value);
 	}
 	
 	/**
@@ -64,20 +67,13 @@ public class GameGrid {
 	 * @return An array of [row, col, whether player is on objective]
 	 */
 	public int[] getPlayerCoordinate(){
-		int[] coordinate = new int[3];
+		int[] coordinate = new int[2];
 		
 		for(int r = 0; r < rowCount; r++){
 			for(int c = 0; c < colCount; c++){
-				if(this.grid.get(r).get(c) == 1){
-					coordinate[0] = r + 1;
-					coordinate[1] = c + 1;
-					coordinate[2] = 0;
-				}
-				
-				else if(this.grid.get(r).get(c) == 5){
-					coordinate[0] = r + 1;
-					coordinate[1] = c + 1;
-					coordinate[2] = 1;
+				if(this.grid.get(r).get(c) == 5){
+					coordinate[0] = r;
+					coordinate[1] = c;
 				}
 			}
 		}
@@ -161,6 +157,5 @@ public class GameGrid {
 	public void setColCount(int colCount) {
 		this.colCount = colCount;
 	}
-	
 	
 }
