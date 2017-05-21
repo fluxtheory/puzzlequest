@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 /**
  * Player Controller class, used to control the player in the grid
  * @author Asus
@@ -14,6 +16,17 @@ public class PlayerController {
 		this.player = gg.getPlayerCoordinate();
 		this.manRaw = player[0];
 		this.manCol = player[1];
+	}
+	
+	public boolean iswin(GameGrid gg){
+		for(int i=0;i<gg.getRowCount();i++){
+			for(int j=0;j<gg.getColCount();j++){
+				if(ggtemp.getCoordinateValue(i, j)==4 && gg.getCoordinateValue(i, j)!=9){
+					return false;
+				}
+			}
+		}
+		return true;
 	}
 	
 	public void moveRight(GameGrid gg){

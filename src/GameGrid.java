@@ -167,15 +167,4 @@ public class GameGrid {
 		this.colCount = colCount;
 	}
 	
-	public boolean iswin(){
-		for(ArrayList<Integer> row: this.grid){
-			for(Integer col: row){
-				if(col == 4){
-					return false;
-				}
-			}
-		}
-		return true;
-	}
-	
 }

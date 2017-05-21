@@ -79,7 +79,7 @@ public class Grid extends JPanel implements KeyListener{
 			pl.moveRight(gg);
 			repaint();
 		}
-		if(gg.iswin()){
+		if(pl.iswin(gg)){
 			String msg = "Congratulations, you passed level " + "2" + "!!!";
 			int type = JOptionPane.YES_NO_OPTION;
 			String title = "Pass";
