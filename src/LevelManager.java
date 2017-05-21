@@ -22,14 +22,16 @@ public class LevelManager {
 	public GameGrid createLevel(int index){
 		GameGrid gg = null;
 		Scanner sc = null;
+		int i = 1;
+		
 		File f = new File("levels/" + index + ".wbl");
 		try{
 			sc = new Scanner(f);
 			gg = new GameGrid();
 			while(sc.hasNextLine()){
 				String line = sc.nextLine();
-				gg.addRow();
-				gg.setRow(gg.getRowCount(), this.StringToArrayList_Int(line));
+				gg.setRow(i, this.StringToArrayList_Int(line));
+				i++;
 			}
 		}
 		
@@ -46,7 +48,7 @@ public class LevelManager {
 	}	
 	
 	/**
-	 * loadLevel loads a save file into the gamegrid.
+	 * loadGame loads a save file into the gamegrid.
 	 * Saves are loaded from "saves/*.sav"
 	 * @param index The index of the save file
 	 * @return The gamegrid if found, null if not found.
@@ -54,14 +56,15 @@ public class LevelManager {
 	public GameGrid loadGame(int index){
 		GameGrid gg = null;
 		Scanner sc = null;
+		int i = 1;
 		File f = new File("saves/" + index + ".sav");
 		try{
 			sc = new Scanner(f);
 			gg = new GameGrid();
 			while(sc.hasNextLine()){
 				String line = sc.nextLine();
-				gg.addRow();
-				gg.setRow(gg.getRowCount(), this.StringToArrayList_Int(line));
+				gg.setRow(i, this.StringToArrayList_Int(line));
+				i++;
 			}
 		}
 		
@@ -72,7 +75,7 @@ public class LevelManager {
 		finally
 	    {
 	    	  if (sc != null) sc.close();
-	    }	
+	    }
 		
 		return gg;
 	}
