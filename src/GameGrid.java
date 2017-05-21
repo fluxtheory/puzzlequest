@@ -99,6 +99,15 @@ public class GameGrid {
 	}
 	
 	/**
+	 * Get row gets you a row!
+	 * @param r
+	 */
+	public ArrayList<Integer> getRow(int r){
+		return this.grid.get(r - 1);
+	}
+	
+	
+	/**
 	 * Set column to a given array list
 	 * Trims exceedingly long array lists.
 	 * Will adjust rowCount if gamegrid is 0 x 0
