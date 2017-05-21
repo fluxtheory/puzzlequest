@@ -17,8 +17,8 @@ public class Grid extends JPanel implements KeyListener{
 	
 	LevelManager lm = new LevelManager();
 	LevelManager lmtemp = new LevelManager();
-	GameGrid gg = lm.loadLevel(2);
-	GameGrid ggtemp = lm.loadLevel(2);
+	GameGrid gg = lm.loadGame(2);
+	GameGrid ggtemp = lm.loadGame(2);
 	Image[] myImage = new Image[10];
 	PlayerController pl = new PlayerController(gg, ggtemp);
 	
