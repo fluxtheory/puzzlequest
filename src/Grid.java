@@ -19,7 +19,7 @@ public class Grid extends JPanel implements KeyListener{
 	LevelManager lmtemp = new LevelManager();
 	GameGrid gg = lm.createLevel(2);
 	GameGrid ggtemp = lm.createLevel(2);
-	Image[] myImage = new Image[10];
+	Image[] myImage = new Image[14];
 	PlayerController pl = new PlayerController(gg);
 	
 	
@@ -29,7 +29,7 @@ public class Grid extends JPanel implements KeyListener{
 		
 		setBounds(0,0,600,600);
 		addKeyListener(this);
-		for(int i =0; i < 10; i++){
+		for(int i =0; i < 14; i++){
 			myImage[i] = Toolkit.getDefaultToolkit().getImage("pic/"+ i + ".gif");
 		}
 		

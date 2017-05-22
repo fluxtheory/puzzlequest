@@ -3,16 +3,6 @@ import java.util.ArrayList;
 /**
  * Gamegrid class holds information about the state of the game
  * 
- * 0 = Empty space
- * 1 = Wall
- * 2 = Ground
- * 3 = Box
- * 4 = Objective
- * 5 = Player Down
- * 6 = Player Left
- * 7 = Player Right
- * 8 = Player Up
- * 9 = Crate on Objective
  */
 public class GameGrid {
 
