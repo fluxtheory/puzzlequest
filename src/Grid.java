@@ -39,11 +39,10 @@ public class Grid extends JPanel implements KeyListener{
 	
 	
 	
-	public void redo(){
-	// function stub	
-		
-		
+	public GameGrid returnGame(){
+		return gg;
 	}
+	
 	
 	
 	
