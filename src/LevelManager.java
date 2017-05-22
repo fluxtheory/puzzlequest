@@ -1,9 +1,9 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.io.PrintWriter;
 
 /**
  * Level loader class, used to load levels
@@ -11,20 +11,22 @@ import java.util.Scanner;
  */
 public class LevelManager {
 
-
-
+	public GameGrid loadEmptyLevel(){
+		GameGrid gg = new GameGrid();
+		return gg;
+	}
+	
 	/**
-	 * createLevel loads a level into the gamegrid.
-	 * Levels are loaded from "levels/*.wbl"
-	 * @param index The index of the save file
-	 * @return The gamegrid if found, null if not found.
+	 * loadLevel loads a level into the gamegrid.
+	 * It reads the level from .wml files in levels directory.
+	 * @param level
+	 * @return
 	 */
-	public GameGrid createLevel(int index){
+	public GameGrid createLevel(int level){
 		GameGrid gg = null;
 		Scanner sc = null;
 		int i = 1;
-		
-		File f = new File("levels/" + index + ".wbl");
+		File f = new File("levels/" + level + ".map");
 		try{
 			sc = new Scanner(f);
 			gg = new GameGrid();
@@ -35,9 +37,7 @@ public class LevelManager {
 			}
 		}
 		
-		catch(FileNotFoundException e){
-			return null;
-		}
+		catch(FileNotFoundException e){}
 	    
 		finally
 	    {
@@ -45,14 +45,8 @@ public class LevelManager {
 	    }	
 		
 		return gg;
-	}	
+	}
 	
-	/**
-	 * loadGame loads a save file into the gamegrid.
-	 * Saves are loaded from "saves/*.sav"
-	 * @param index The index of the save file
-	 * @return The gamegrid if found, null if not found.
-	 */
 	public GameGrid loadGame(int index){
 		GameGrid gg = null;
 		Scanner sc = null;
@@ -80,33 +74,12 @@ public class LevelManager {
 		return gg;
 	}
 	
-	
 	/**
 	 * saveLevel saves a gameGrid into a file.
 	 * @param gg The gamegrid to be saved
 	 * @param index The index of the save file.
 	 */
-	public void saveGame(GameGrid gg, int index) throws IOException{
-		
-		File file = new File("saves/" + index + ".sav");
-		file.createNewFile();
-		PrintWriter writer = new PrintWriter(file);
-		
-		for(int i = 0; i < gg.getRowCount(); i++){
-			for(int j = 0; j < gg.getColCount(); j++){
-				System.out.println(gg.getRow(i + 1).get(j));
-				writer.write(Integer.toString(gg.getRow(i + 1).get(j)));
-			}
-			if(i != gg.getColCount() - 1){
-				writer.write("\n");
-			}
-		}
-		writer.flush();
-		writer.close();
-	}
-	
-	
-	
+
 	
 	
 	/**
@@ -122,4 +95,6 @@ public class LevelManager {
 		
 		return l;
 	}
+	
+
 }
