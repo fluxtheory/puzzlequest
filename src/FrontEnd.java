@@ -60,6 +60,7 @@ public class FrontEnd extends JFrame {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+	       setLocationRelativeTo(null);
 	        
 		}
 
@@ -79,7 +80,7 @@ public class MenuScreen extends JPanel{       //currently startscreen.
 		//GameMenu menu = new GameMenu( ,true,true);
 		
 		try {
-			img = ImageIO.read(new File("unnamed.png"));
+			img = ImageIO.read(new File("pic/unnamed.png"));
 
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
