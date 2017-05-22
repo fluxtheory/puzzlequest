@@ -14,23 +14,21 @@ import java.util.ArrayList;
  * 8 = Player Up
  * 9 = Crate on Objective
  */
-public class GameGrid {
 
-	public static final int EMPTY_SPACE = 0;
-	public static final int WALL = 1;
-	public static final int GROUND = 2;
-	public static final int BOX = 3;
-	public static final int OBJECTIVE = 4;
-	public static final int PLAYER_DOWN = 5;
-	public static final int PLAYER_LEFT = 6;
-	public static final int PLAYER_RIGHT = 7;
-	public static final int PLAYER_UP = 8;
-	public static final int OBJECTIVE_BOX = 9;
-	public static final int OBJECTIVE_PLAYER_DOWN = 10;
-	public static final int OBJECTIVE_PLAYER_LEFT = 11;
-	public static final int OBJECTIVE_PLAYER_RIGHT = 12;
-	public static final int OBJECTIVE_PLAYER_UP = 13;
+
+public class GameGrid {
 	
+	public static final int EMPTY_SPACE = 0;
+ 	public static final int WALL = 1;
+	public static final int GROUND = 2;
+ 	public static final int BOX = 3;
+ 	public static final int OBJECTIVE = 4;
+ 	public static final int PLAYER_DOWN = 5;
+ 	public static final int PLAYER_LEFT = 6;
+ 	public static final int PLAYER_RIGHT = 7;
+ 	public static final int PLAYER_UP = 8;
+ 	public static final int OBJECTIVE_BOX = 9;
+ 	
 	private ArrayList<ArrayList<Integer>> grid;
 	private int rowCount;
 	private int colCount;
@@ -42,16 +40,15 @@ public class GameGrid {
 	 */
 	public GameGrid(){
 		this.grid = new ArrayList<ArrayList<Integer>>();
-		
 		rowCount = 20;
-		colCount = 20;
-		
+		colCount = 20;	
 		for(int i = 0; i < 20; i++){
 			this.grid.add(new ArrayList<Integer>());
 			for(int j = 0; j < 20; j++){
 				this.grid.get(i).add(0);
 			}
 		}
+	
 	}
 	
 	/**
@@ -60,17 +57,7 @@ public class GameGrid {
 	public void printGrid(){
 		for(ArrayList<Integer> row: this.grid){
 			for(Integer col: row){
-				if(col <= PLAYER_UP && col >= PLAYER_DOWN){
-				System.out.print("(" + col + ")");
-				}
-				
-				else if(col == EMPTY_SPACE){
-					// Do nothing
-				}
-				
-				else{
-					System.out.print(col + "  ");
-				}
+				System.out.print(col + " ");
 			}
 			System.out.print("\n");
 		}
@@ -83,7 +70,7 @@ public class GameGrid {
 	 * @return The value at the coordinate
 	 */
 	public Integer getCoordinateValue(int r, int c){
-		return this.grid.get(r - 1).get(c - 1);
+		return this.grid.get(r).get(c);
 	}
 	
 	/**
@@ -93,7 +80,7 @@ public class GameGrid {
 	 * @param value The value for the coordinate to be set to
 	 */
 	public void SetCoordinateValue(int r, int c, int value){
-		this.grid.get(r - 1).set(c - 1, value);
+		this.grid.get(r).set(c, value);
 	}
 	
 	/**
@@ -105,9 +92,9 @@ public class GameGrid {
 		
 		for(int r = 0; r < rowCount; r++){
 			for(int c = 0; c < colCount; c++){
-				if(this.grid.get(r).get(c) >= PLAYER_DOWN && this.grid.get(r).get(c) <= PLAYER_UP){
-					coordinate[0] = r + 1;
-					coordinate[1] = c + 1;
+				if(this.grid.get(r).get(c) == 5){
+					coordinate[0] = r;
+					coordinate[1] = c;
 				}
 			}
 		}
@@ -128,24 +115,9 @@ public class GameGrid {
 		
 		this.grid.get(r - 1).clear();
 		for(int i = 0; i < colCount; i++){
-			if(i < input.size()){
-				this.grid.get(r - 1).add(input.get(i));
-			}
-			
-			else{
-				this.grid.get(r - 1).add(0);
-			}
+			this.grid.get(r - 1).add(input.get(i));
 		}
 	}
-	
-	/**
-	 * Get row gets you a row!
-	 * @param r
-	 */
-	public ArrayList<Integer> getRow(int r){
-		return this.grid.get(r - 1);
-	}
-	
 	
 	/**
 	 * Set column to a given array list
@@ -158,15 +130,29 @@ public class GameGrid {
 		}
 		
 		for(int i = 0; i < rowCount; i++){
-			if(i < input.size()){
-				this.grid.get(i).set(c - 1, input.get(i));
-			}
-			
-			else{
-				this.grid.get(i).set(c - 1, 0);
-			}
+			this.grid.get(i).set(c - 1, input.get(i));
 		}
 	}
+	
+	
+	/**
+	 * addRow appends an empty row
+	 */
+	public void addRow(){
+		this.grid.add(new ArrayList<Integer>());
+		this.rowCount++;
+	}
+	
+	/**
+	 * addCol appends an empty column
+	 */
+	public void addCol(){
+		for(int i = 0; i < rowCount; i++){
+			this.grid.get(i).add(0);
+		}
+		this.colCount++;
+	}
+	
 	
 	// Getters and Setters
 	public ArrayList<ArrayList<Integer>> getGrid() {
