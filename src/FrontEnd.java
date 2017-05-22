@@ -1,5 +1,3 @@
-import java.awt.BorderLayout;
-import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -7,21 +5,17 @@ import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.concurrent.CountDownLatch;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.Graphics;
@@ -29,19 +23,14 @@ import java.awt.Graphics2D;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
-import javafx.scene.Scene;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 	
 public class FrontEnd extends JFrame {
 	
-	private JPanel panelContainer = new JPanel(new CardLayout());;
 	private JPanel homePanel;
 	private static int lastInt;
 	private boolean currentGame;
@@ -54,16 +43,13 @@ public class FrontEnd extends JFrame {
 		}
 		
 		public void initUI(){
-			
-			
-			JPanel start = new startScreen();
-			panelContainer.add(start);
+
+			JPanel startScreen = new MenuScreen();
 			menuBar();
-			add(start);
+			add(startScreen);
 			setTitle("Puzzle Quest");
 			setDefaultCloseOperation(EXIT_ON_CLOSE);
 			setLocationByPlatform(true);
-	        //setLocationRelativeTo(null);
 	        setResizable(false);
 	        pack();
 
@@ -76,10 +62,8 @@ public class FrontEnd extends JFrame {
 			}
 	        
 		}
-		
 
-
-public class startScreen extends JPanel{     
+public class MenuScreen extends JPanel{       //currently startscreen.
 	
 	private List<String> menuItems;
     private String focusedItem;
@@ -90,7 +74,9 @@ public class startScreen extends JPanel{
     private GameMenuPainter painter;
     
 	
-	public startScreen(){
+	public MenuScreen(){
+		
+		//GameMenu menu = new GameMenu( ,true,true);
 		
 		try {
 			img = ImageIO.read(new File("unnamed.png"));
@@ -103,7 +89,6 @@ public class startScreen extends JPanel{
 		
 		for (int i = 0; i <= 13; i++){
 			String loc = "pic/TITLE" + i + ".gif";
-			//System.out.println(loc);
 			titles[i] = Toolkit.getDefaultToolkit().getImage(loc);
 		}
 		
@@ -129,7 +114,6 @@ public class startScreen extends JPanel{
                         
                         if (newItem == "Start Game"){
                     		gameModePicker();
-              
                     		
                     	} else if(newItem == "Load Game"){
                     		loadGame();
@@ -182,20 +166,19 @@ public class startScreen extends JPanel{
 	    
 	    @Override
 	    protected void paintComponent(Graphics g) {
-	    	
-   
-        
-        super.paintComponent(g);
-        Graphics2D g2d = (Graphics2D) g.create();
-        if (menuButtons == null) {
-            menuButtons = new HashMap<>(menuItems.size());
-            int width = 0;
-            int height = 0;
-            for (String text : menuItems) {
-                Dimension dim = painter.getPreferredSize(g2d, text);
-                width = Math.max(width, dim.width);
-                height = Math.max(height, dim.height);
-            }
+
+       		super.paintComponent(g);
+ 	        Graphics2D g2d = (Graphics2D) g.create();
+ 	        if (menuButtons == null) {
+            	menuButtons = new HashMap<>(menuItems.size());
+            	int width = 0;
+            	int height = 0;
+
+            	for (String text : menuItems) {
+                	Dimension dim = painter.getPreferredSize(g2d, text);
+                	width = Math.max(width, dim.width);
+                	height = Math.max(height, dim.height);
+            	}
 
             int x = (getWidth() - (width + 10)) / 2;
 
@@ -209,7 +192,7 @@ public class startScreen extends JPanel{
                 y += height + 10 + 5;
             }
 
-        }
+       	}
         
         g2d.drawImage(img,0,0,null);
         
@@ -263,7 +246,7 @@ public class startScreen extends JPanel{
 					//create new JPanel
 					createGameSpace();
 				} else {
-					
+					createGameSpace();
 				}
 				
 			});
@@ -310,43 +293,13 @@ public class startScreen extends JPanel{
 		
 		public void gameModePicker(){
 			
-			JPanel diff = new JPanel();
-			panelContainer.add(diff);
-			diff.setBorder(new EmptyBorder(150,125,10,10));
-			diff.setBackground(Color.BLACK);
-			BoxLayout layout = new BoxLayout(diff,BoxLayout.Y_AXIS);
+			List<String> menuItems;
+			String focusedItem;
+			Map<String, Rectangle> menuButtons;
+			GameMenuPainter painter;
 			
-			JButton easy = new JButton("SOLO PLAY");
-			easy.addActionListener((ActionEvent event) -> {
-				createGameSpace();
-			});
 			
-			JButton medium = new JButton("TIMED PLAY");
-			medium.addActionListener((ActionEvent event) -> {
-				createGameSpace();    //new class?   an interface, then 3 classes that implement.    CoopGrid, TimedGrid, SoloGrid
-			});
 			
-			JButton hard = new JButton("CO-OP PLAY");
-			hard.addActionListener((ActionEvent event) -> {
-				createGameSpace();
-			});
-			
-			JButton back = new JButton("Back");
-			back.addActionListener((ActionEvent event) -> {
-				add(new startScreen());
-			});
-			
-			diff.setLayout(layout);
-			diff.add(easy);
-			diff.add(Box.createRigidArea(new Dimension(0,15)));
-			diff.add(medium);
-			diff.add(Box.createRigidArea(new Dimension(0,15)));
-			diff.add(hard);
-			diff.add(Box.createRigidArea(new Dimension(0,40)));
-			diff.add(back);
-			
-			setContentPane(diff);
-			validate();
 			
 			
 			//;
@@ -355,7 +308,7 @@ public class startScreen extends JPanel{
 		public void createGameSpace(){
 
 			Grid grid = new Grid(2);
-			panelContainer.add(grid);
+			//panelContainer.add(grid);
 			add(grid);
 			grid.requestFocus();
 			setContentPane(grid);
