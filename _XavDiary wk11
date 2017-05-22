@@ -1,0 +1,16 @@
+
+Monday - nothing
+Tuesday - nothing
+Wednesday -
+
+    what did I do yesterday? - nothing
+    what will I do today? - revamp startscreen GUI into something more pleasant looking.
+    is anything in my way? - yes, overlapping components is very difficult to achieve in swing. Either I learn all the ins and outs
+    of all the layout managers, or I can learn how to override the paintComponent function in the awt and graphics2d libraries.
+    
+Thursday - 
+
+    what did I do yesterday? - replaced swing jbuttons with custom designed buttons that can detect mouse movement and change colors accordingly
+    what will I do today? - make the new buttons overlap with a background image of my choosing.
+    is anything in my way? - 
+
