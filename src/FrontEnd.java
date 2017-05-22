@@ -33,8 +33,7 @@ public class FrontEnd extends JFrame {
 	
 	private JPanel homePanel;
 	private static int lastInt;
-	private boolean currentGameState;
-	private GameGrid currentGame;
+	private boolean currentGame;
 	public MediaPlayer m;
 	
 		public FrontEnd(){
@@ -62,9 +61,8 @@ public class FrontEnd extends JFrame {
 				e.printStackTrace();
 			}
 	        
+	        setLocationRelativeTo(null);
 		}
-	
-		setLocationRelativeTo(null);
 
 public class MenuScreen extends JPanel{       //currently startscreen.
 	
@@ -226,7 +224,7 @@ public class MenuScreen extends JPanel{       //currently startscreen.
 					
 				}*/
 				
-				currentGameState = false;
+				currentGame = false;
 				setResizable(true);
 				setContentPane(homePanel);
 				setResizable(false);
@@ -245,7 +243,7 @@ public class MenuScreen extends JPanel{       //currently startscreen.
 			
 			JMenuItem newGame = new JMenuItem("New Game");
 			newGame.addActionListener((ActionEvent event)-> {
-				if(currentGameState == true){
+				if(currentGame == true){
 					//create new JPanel
 					createGameSpace();
 				} else {
@@ -318,7 +316,7 @@ public class MenuScreen extends JPanel{       //currently startscreen.
 			validate();
 			setSize(new Dimension(600,600));
 			setResizable(false);
-			currentGameState = true;
+			currentGame = true;
 			try {
 				m.stop();
 				chooseMusic();
@@ -328,9 +326,6 @@ public class MenuScreen extends JPanel{       //currently startscreen.
 				e.printStackTrace();
 			}
 			
-			currentGame = grid.returnGame();
-			
-			save.setEnabled(true);
 		}
 		
 		public void aboutPage(){
@@ -378,36 +373,12 @@ public class MenuScreen extends JPanel{       //currently startscreen.
 		public void saveGame(){
 			JFileChooser c = new JFileChooser();
 			c.showSaveDialog(this);
-			String filename=c.getSelectedFile().getName();
-			
-			File file = new File("saves/" + filename + ".sav");
-			
-			try {
-				file.createNewFile();
-				PrintWriter writer = new PrintWriter(file);
-				
-				for(int i = 0; i < gg.getRowCount(); i++){
-					for(int j = 0; j < gg.getColCount(); j++){
-						System.out.println(gg.getRow(i + 1).get(j));
-						writer.write(Integer.toString(gg.getRow(i + 1).get(j)));
-					}
-					if(i != gg.getColCount() - 1){
-						writer.write("\n");
-					}
-				}
-				writer.flush();
-				writer.close();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				System.out.println("Cannot Save");
-				e.printStackTrace();
-			}
 		}
 		
 		public void loadGame(){
 			JFileChooser c = new JFileChooser();
 			c.showOpenDialog(this);
-			File file = c.getSelectedFile();
+			
 		}
 		
 		
@@ -438,10 +409,6 @@ public class MenuScreen extends JPanel{       //currently startscreen.
  
 		}
 		
-		//to-do list:
-			//link save/load to grid
-			// re-do mode selection screen
-			//refactor code.
-	
+		
 	
 }
