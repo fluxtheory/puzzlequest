@@ -2,9 +2,12 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
+import java.util.Stack;
 
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
@@ -12,7 +15,7 @@ import javax.swing.JPanel;
 
 
 	
-public class Grid extends JPanel implements KeyListener{
+public class Grid extends JPanel implements KeyListener, ActionListener{
 
 	
 	LevelManager lm = new LevelManager();
@@ -20,11 +23,14 @@ public class Grid extends JPanel implements KeyListener{
 	GameGrid gg = lm.createLevel(2);
 	GameGrid ggtemp = lm.createLevel(2);
 	Image[] myImage = new Image[10];
-	PlayerController pl = new PlayerController(gg);
+	PlayerController pl = new PlayerController(gg, ggtemp);
 	
 	
 	public Grid(int level){
 		JButton redo = new JButton("Redo");
+		redo.addActionListener((ActionEvent event)-> {
+			redo();
+		});
 		add(redo);
 		
 		setBounds(0,0,600,600);
@@ -33,15 +39,36 @@ public class Grid extends JPanel implements KeyListener{
 			myImage[i] = Toolkit.getDefaultToolkit().getImage("pic/"+ i + ".gif");
 		}
 		
-	
 	}
 	
 	
 	
 	
 	public void redo(){
-	// function stub	
-		
+		if(pl.isMystackEmpty()){
+			JOptionPane.showMessageDialog(this, "You haven't moved!!!");
+		}else{
+			switch(pl.back()){
+			case 10: pl.backup(10, gg);
+				break;
+			case 11: pl.backup(11,gg);
+				break;
+			case 20: pl.backdown(20, gg);
+				break;
+			case 21: pl.backdown(21, gg);
+				break;
+			case 30: pl.backleft(30, gg);
+				break;
+			case 31: pl.backleft(31, gg);
+				break;
+			case 40: pl.backright(40, gg);
+				break;
+			case 41: pl.backright(41, gg);
+				break;
+			}
+		}
+		repaint();
+		this.requestFocus();
 		
 	}
 	
@@ -87,8 +114,9 @@ public class Grid extends JPanel implements KeyListener{
 			choice = JOptionPane.showConfirmDialog(null, msg, title, type);
 			if(choice == 1) System.exit(0);
 			else if(choice == 0){
-				//
+				
 			}
+			pl.mystack.removeAllElements();
 		}
 		
 	}
@@ -98,6 +126,16 @@ public class Grid extends JPanel implements KeyListener{
 		// TODO Auto-generated method stub
 		
 	}
+
+
+
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+
+		
+	}
+	
 
 	
 }
