@@ -2,6 +2,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
@@ -24,18 +25,85 @@ public class Grid extends JPanel implements KeyListener{
 	
 	
 	public Grid(int level){
-		JButton redo = new JButton("Redo");
-		add(redo);
+		JButton undo = new JButton("Undo");
+		undo.addActionListener((ActionEvent event)->{
+			undo();
+		});
+		add(undo);
 		
 		setBounds(0,0,600,600);
 		addKeyListener(this);
 		for(int i =0; i < 14; i++){
 			myImage[i] = Toolkit.getDefaultToolkit().getImage("pic/"+ i + ".gif");
 		}
-		
 	
 	}
 	
+	
+	public void undo(){
+		if(pl.getUndoStackNext().isEmpty()){
+			JOptionPane.showMessageDialog(this, "You haven't moved!!!");
+		}
+		
+		else{
+			switch(pl.backNext()){
+		case 10: pl.backRight(10, pl.backOrig(), gg);
+			break;
+		case 11: pl.backRight(11, pl.backOrig(), gg);
+			break;
+		case 12: pl.backRight(12, pl.backOrig(), gg);
+			break;
+		case 13: pl.backRight(13, pl.backOrig(), gg);
+			break;
+		case 14: pl.backRight(14, pl.backOrig(), gg);
+			break;
+		case 15: pl.backRight(15, pl.backOrig(), gg);
+			break;
+			
+		case 20: pl.backLeft(20, pl.backOrig(), gg);
+			break;
+		case 21: pl.backLeft(21, pl.backOrig(), gg);
+			break;
+		case 22: pl.backLeft(22, pl.backOrig(), gg);
+			break;
+		case 23: pl.backLeft(23, pl.backOrig(), gg);
+			break;
+		case 24: pl.backLeft(24, pl.backOrig(), gg);
+			break;
+		case 25: pl.backLeft(25, pl.backOrig(), gg);
+			break;
+			
+
+		case 30: pl.backUp(30, pl.backOrig(), gg);
+			break;
+		case 31: pl.backUp(31, pl.backOrig(), gg);
+			break;
+		case 32: pl.backUp(32, pl.backOrig(), gg);
+			break;
+		case 33: pl.backUp(33, pl.backOrig(), gg);
+			break;
+		case 34: pl.backUp(34, pl.backOrig(), gg);
+			break;
+		case 35: pl.backUp(35, pl.backOrig(), gg);
+			break;
+			
+		case 40: pl.backDown(40, pl.backOrig(), gg);
+			break;
+		case 41: pl.backDown(41, pl.backOrig(), gg);
+			break;
+		case 42: pl.backDown(42, pl.backOrig(), gg);
+			break;
+		case 43: pl.backDown(43, pl.backOrig(), gg);
+			break;
+		case 44: pl.backDown(44, pl.backOrig(), gg);
+			break;
+		case 45: pl.backDown(45, pl.backOrig(), gg);
+			break;			
+			}
+		}
+		repaint();
+		this.requestFocus();	
+	}
 	
 	
 	
