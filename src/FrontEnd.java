@@ -411,13 +411,30 @@ public class FrontEnd extends JFrame {
 		}
 
 		public void loadGame(){
+			
+			
+			// Loads a level
 			LevelManager ld = new LevelManager();
 			currentGame = ld.loadGame(this);
-			Grid loadGrid = new Grid();
-			loadGrid.loadSave(currentGame);
-			setContentPane(loadGrid);
+			
+			// Create a gamespace
+			Grid grid = new Grid();
+			add(grid);
+			setContentPane(grid);
+			grid.updateGrid(currentGame);
+			grid.requestFocus();
 			validate();
 			
+			// Sexify our game
+			setSize(new Dimension(600,600));
+			setResizable(false);
+			currentGameState = true;
+			playMusic();
+			
+			currentGame = grid.returnGame();
+			
+			save.setEnabled(true);
+			 
 			
 		}
 		
