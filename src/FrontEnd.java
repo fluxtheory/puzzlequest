@@ -1,7 +1,9 @@
 import java.awt.Color;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
@@ -26,7 +28,10 @@ import java.awt.Graphics2D;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -38,8 +43,12 @@ public class FrontEnd extends JFrame {
 	private static int lastInt;
 	private boolean currentGameState;
 	private GameGrid currentGame;
+	private Grid currentGrid;
 	private JMenuItem save;
+	private JMenuItem returnB;
 	public MediaPlayer m;
+	
+	
 	private int lastSliderVal = 50;
 	
 		public FrontEnd(){
@@ -67,7 +76,7 @@ public class FrontEnd extends JFrame {
 			
 	       		try {
 				chooseMusic();
-				m.setVolume(0.5);
+				m.setVolume( ((double) lastSliderVal )/100 );
 				m.play();
 				
 			} catch (InterruptedException e) {
@@ -145,13 +154,13 @@ public class FrontEnd extends JFrame {
 	                    		System.exit(0);
 	                    		
 	                    	} else if(newItem == "Solo Play"){
-	                    		createGameSpace();
+	                    		createSingleGameSpace();
 	                    		
 	                    	} else if(newItem == "Timed Game"){
-	                    		createGameSpace();
+	                    		createSingleGameSpace();
 	                    		
 	                    	} else if(newItem == "Co-op Game"){
-	                    		createGameSpace();
+	                    		createDoubleGameSpace();
 	                    		
 	                    	} else if(newItem == "Back"){
 	                    		setResizable(true);
@@ -273,6 +282,20 @@ public class FrontEnd extends JFrame {
 
 			});
 			
+			JMenuItem Restart = new JMenuItem("Restart");
+			Restart.addActionListener((ActionEvent event)-> {
+				
+			});
+			
+			JMenuItem Undo = new JMenuItem("Undo");
+			Undo.addActionListener((ActionEvent event)-> {
+				if(currentGrid.returnUndoCounter() > 0){
+					currentGrid.undo();
+				} else {
+					JOptionPane.showMessageDialog(this, "No more moves left!");
+				}
+			});
+			
 			JMenuItem newGame = new JMenuItem("New Game");
 			newGame.addActionListener((ActionEvent event)-> {
 				
@@ -310,6 +333,8 @@ public class FrontEnd extends JFrame {
 			});
 			
 			file.add(ret);
+			file.add(Undo);
+			file.add(Restart);
 			file.addSeparator();
 			file.add(newGame);
 			file.add(saveGame);
@@ -336,7 +361,9 @@ public class FrontEnd extends JFrame {
 			
 			if(!currentGameState){
 				saveGame.setEnabled(false);  
+				ret.setEnabled(false);
 				save = saveGame;
+				returnB = ret;
 			}
 			
 		}
@@ -352,12 +379,13 @@ public class FrontEnd extends JFrame {
 			add(mode);
 			setContentPane(mode);
 			validate();
+			returnB.setEnabled(true);
 
 		}
 		
-		public void createGameSpace(){
+		public void createSingleGameSpace(){
 
-			Grid grid = new Grid();
+			Grid grid = new Grid(false);
 			add(grid);
 			grid.requestFocus();
 			setContentPane(grid);
@@ -367,7 +395,24 @@ public class FrontEnd extends JFrame {
 			currentGameState = true;
 			playMusic();
 			currentGame = grid.returnGame();
+			currentGrid = grid;
 			save.setEnabled(true);
+			
+		}
+		
+		public void createDoubleGameSpace(){
+			setResizable(true);
+			
+			TwoPGrid grid = new TwoPGrid();
+			add(grid);
+			grid.requestFocus();
+			setContentPane(grid);
+			validate();
+			
+			setSize(new Dimension(1210,600));
+			setResizable(false);
+			currentGameState = true;
+			playMusic();
 		}
 		
 		public void aboutPage(){
@@ -392,7 +437,7 @@ public class FrontEnd extends JFrame {
 	        BorderComp.setBorder(paneEdge);
 	        BorderComp.setLayout(new BoxLayout(BorderComp, BoxLayout.Y_AXIS));
 	        
-	      //addInterfaceComp(ginterface, BorderComp);
+	        addInterfaceComp(ginterface, BorderComp);
 	        addAudioComp(audio, BorderComp);
 	        addGameSettComp(game, BorderComp);
 	        
@@ -422,7 +467,7 @@ public class FrontEnd extends JFrame {
 			currentGame = ld.loadGame(this);
 			
 			// Create a gamespace
-			Grid grid = new Grid();
+			Grid grid = new Grid(false);
 			add(grid);
 			setContentPane(grid);
 			grid.updateGrid(currentGame);
@@ -436,7 +481,7 @@ public class FrontEnd extends JFrame {
 			playMusic();
 			
 			currentGame = grid.returnGame();
-			
+			currentGrid = grid;
 			save.setEnabled(true);
 			 
 			
@@ -484,7 +529,7 @@ public class FrontEnd extends JFrame {
 		
 		void addInterfaceComp(Border border, Container container) {
 			JPanel comp = new JPanel(new GridLayout(1, 1), false);
-			JLabel label = new JLabel("placeholder", JLabel.CENTER);
+			JLabel label = new JLabel("Resolution/Maximize", JLabel.CENTER);
 			comp.add(label);
 			comp.setBorder(border);
 
@@ -544,6 +589,7 @@ public class FrontEnd extends JFrame {
 				chooseMusic();
 				m.play();
 				m.setVolume(vol);
+
 				
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
@@ -559,7 +605,7 @@ public class FrontEnd extends JFrame {
 				
 			
 				if(purpose.equals("return")){
-				
+					
 					currentGameState = false;
 					setResizable(true);
 					setPreferredSize(homePanel.getPreferredSize());
@@ -571,7 +617,7 @@ public class FrontEnd extends JFrame {
 					
 				} else if (purpose.equals("new")){
 					
-					gameModePicker();    //this is broken.
+					gameModePicker(); //errors.
 					
 				} else if (purpose.equals("load")){
 					
