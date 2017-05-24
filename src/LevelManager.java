@@ -5,6 +5,9 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+
 /**
  * Level loader class, used to load levels
  * Generates grid for BackEnd
@@ -53,29 +56,39 @@ public class LevelManager {
 	 * @param index The index of the save file
 	 * @return The gamegrid if found, null if not found.
 	 */
-	public GameGrid loadGame(int index){
+	public GameGrid loadGame(JFrame frame){
+		JFileChooser c = new JFileChooser();
+		int returnVal = c.showOpenDialog(frame);
+		
+		
 		GameGrid gg = null;
 		Scanner sc = null;
 		int i = 1;
-		File f = new File("saves/" + index + ".sav");
-		try{
-			sc = new Scanner(f);
-			gg = new GameGrid();
-			while(sc.hasNextLine()){
-				String line = sc.nextLine();
-				gg.setRow(i, this.StringToArrayList_Int(line));
-				i++;
-			}
-		}
 		
-		catch(FileNotFoundException e){
-			return null;
+		if (returnVal == JFileChooser.APPROVE_OPTION) {
+		
+			File file = c.getSelectedFile();
+			
+			try{
+				sc = new Scanner(file);
+				gg = new GameGrid();
+				while(sc.hasNextLine()){
+					String line = sc.nextLine();
+					gg.setRow(i, this.StringToArrayList_Int(line));
+					i++;
+				}
+			}
+			
+			catch(FileNotFoundException e){
+				//
+			}
+		    
+			finally
+		    {
+		    	  if (sc != null) sc.close();
+		    }
+
 		}
-	    
-		finally
-	    {
-	    	  if (sc != null) sc.close();
-	    }
 		
 		return gg;
 	}
@@ -86,23 +99,35 @@ public class LevelManager {
 	 * @param gg The gamegrid to be saved
 	 * @param index The index of the save file.
 	 */
-	public void saveGame(GameGrid gg, int index) throws IOException{
+	public void saveGame(GameGrid gg, JFrame frame) throws IOException{
 		
-		File file = new File("saves/" + index + ".sav");
-		file.createNewFile();
-		PrintWriter writer = new PrintWriter(file);
+		JFileChooser c = new JFileChooser();
+		int returnVal = c.showSaveDialog(frame);
 		
-		for(int i = 0; i < gg.getRowCount(); i++){
-			for(int j = 0; j < gg.getColCount(); j++){
-				System.out.println(gg.getRow(i + 1).get(j));
-				writer.write(Integer.toString(gg.getRow(i + 1).get(j)));
-			}
-			if(i != gg.getColCount() - 1){
-				writer.write("\n");
-			}
-		}
-		writer.flush();
-		writer.close();
+		 if (returnVal == JFileChooser.APPROVE_OPTION) {
+		        try {
+		        	File file = new File(c.getSelectedFile()+".sav");
+					PrintWriter writer = new PrintWriter(file);
+					
+					for(int i = 0; i < gg.getRowCount(); i++){
+						for(int j = 0; j < gg.getColCount(); j++){
+							//System.out.println(gg.getRow(i + 1).get(j));
+							writer.write(Integer.toString(gg.getRow(i + 1).get(j)));
+						}
+						if(i != gg.getColCount() - 1){
+							writer.write("\n");
+						}
+					}
+					writer.flush();
+					writer.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					System.out.println("Cannot Save");
+					e.printStackTrace();
+				}
+		         
+		 }
+		
 	}
 	
 	
