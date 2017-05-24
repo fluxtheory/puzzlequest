@@ -143,29 +143,63 @@ public class Grid extends JPanel implements KeyListener{
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		System.out.println("Test");
-		if(e.getKeyCode()==KeyEvent.VK_UP){
-			pl.moveUp(gg);
-			repaint();
-		}
-		if(e.getKeyCode()==KeyEvent.VK_DOWN){
-			pl.moveDown(gg);
-			repaint();
-		}
-		if(e.getKeyCode()==KeyEvent.VK_LEFT){
-			pl.moveLeft(gg);
-			repaint();
-		}
-		if(e.getKeyCode()==KeyEvent.VK_RIGHT){
-			pl.moveRight(gg);
-			repaint();
-		}
-		if(pl.iswin(gg)){
-			String msg = "Congratulations, you passed level " + "2" + "!!!";
-			int type = JOptionPane.DEFAULT_OPTION;
-			String title = "Pass";
-			int choice = JOptionPane.showConfirmDialog(null, msg, title, type);
-			if(choice == 0) System.exit(0);
+		if(!secondary){
+			if(e.getKeyCode()==KeyEvent.VK_UP){
+				pl.moveUp(gg);
+				repaint();
+			}
+			if(e.getKeyCode()==KeyEvent.VK_DOWN){
+				pl.moveDown(gg);
+				repaint();
+			}
+			if(e.getKeyCode()==KeyEvent.VK_LEFT){
+				pl.moveLeft(gg);
+				repaint();
+			}
+			if(e.getKeyCode()==KeyEvent.VK_RIGHT){
+				pl.moveRight(gg);
+				repaint();
+			}
+			if(pl.iswin(gg)){
+				String msg = "Player" + playerID + " Wins!";
+				int type = JOptionPane.YES_NO_OPTION;
+				String title = "Pass";
+				int choice = 0;
+				choice = JOptionPane.showConfirmDialog(null, msg, title, type);
+				if(choice == 1) System.exit(0);
+				else if(choice == 0){
+					//
+				}
+			}
+			
+		} else {
+			if(e.getKeyCode()==KeyEvent.VK_W){
+				pl.moveUp(gg);
+				repaint();
+			}
+			if(e.getKeyCode()==KeyEvent.VK_S){
+				pl.moveDown(gg);
+				repaint();
+			}
+			if(e.getKeyCode()==KeyEvent.VK_A){
+				pl.moveLeft(gg);
+				repaint();
+			}
+			if(e.getKeyCode()==KeyEvent.VK_D){
+				pl.moveRight(gg);
+				repaint();
+			}
+			if(pl.iswin(gg)){
+				String msg = "Player" + playerID + " Wins!";
+				int type = JOptionPane.YES_NO_OPTION;
+				String title = "Pass";
+				int choice = 0;
+				choice = JOptionPane.showConfirmDialog(null, msg, title, type);
+				if(choice == 1) System.exit(0);
+				else if(choice == 0){
+					//
+				}
+			}
 		}
 		
 	}
