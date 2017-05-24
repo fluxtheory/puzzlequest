@@ -26,21 +26,7 @@ public class Grid extends JPanel implements KeyListener{
 	
 	public Grid(){
 		
-		JButton restart = new JButton("Restart");
-		restart.addActionListener((ActionEvent event)->{
-			
-		});
-		JButton undo = new JButton("Undo");
-		undo.addActionListener((ActionEvent event)->{
-			if(undoCounter > 0){
-				undo();
-				((JButton) event.getSource()).setText("Undo (" + undoCounter + ")");
-			} else {
-				JOptionPane.showMessageDialog(this, "No more moves left!");
-			}
-		});
-		add(restart);
-		add(undo);
+		
 		
 		setBounds(0,0,600,600);
 		addKeyListener(this);
