@@ -10,6 +10,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Scanner;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.Graphics;
@@ -340,7 +342,7 @@ public class FrontEnd extends JFrame {
 		
 		public void createGameSpace(){
 
-			Grid grid = new Grid(2);
+			Grid grid = new Grid();
 			add(grid);
 			grid.requestFocus();
 			setContentPane(grid);
@@ -398,65 +400,40 @@ public class FrontEnd extends JFrame {
 		}
 		
 		public void saveGame(GameGrid gg){
-			JFileChooser c = new JFileChooser();
-			c.showSaveDialog(this);
-			/*String filename=c.getSelectedFile().getName();
-			
-			File file = new File("saves/" + filename + ".sav");
-			
+			LevelManager sv = new LevelManager();
 			try {
-				file.createNewFile();
-				PrintWriter writer = new PrintWriter(file);
-				
-				for(int i = 0; i < gg.getRowCount(); i++){
-					for(int j = 0; j < gg.getColCount(); j++){
-						System.out.println(gg.getRow(i + 1).get(j));
-						writer.write(Integer.toString(gg.getRow(i + 1).get(j)));
-					}
-					if(i != gg.getColCount() - 1){
-						writer.write("\n");
-					}
-				}
-				writer.flush();
-				writer.close();
+				sv.saveGame(currentGame, this);  
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
-				System.out.println("Cannot Save");
 				e.printStackTrace();
-			}*/
+			}
+			
 		}
-		
+
 		public void loadGame(){
-			JFileChooser c = new JFileChooser();
-			c.showOpenDialog(this);
-			File file = c.getSelectedFile();
-			/*
-			GameGrid gg = null;
-			Scanner sc = null;
-			int i = 1;
-			File f = new File("saves/" + index + ".sav");
-			try{
-				sc = new Scanner(f);
-				gg = new GameGrid();
-				while(sc.hasNextLine()){
-					String line = sc.nextLine();
-					gg.setRow(i, this.StringToArrayList_Int(line));
-					i++;
-				}
-			}
+			LevelManager ld = new LevelManager();
+			currentGame = ld.loadGame(this);
+			Grid loadGrid = new Grid();
+			loadGrid.loadSave(currentGame);
+			setContentPane(loadGrid);
+			validate();
 			
-			catch(FileNotFoundException e){
-				return null;
-			}
-		    
-			finally
-		    {
-		    	  if (sc != null) sc.close();
-		    }
 			
-			return gg;*/
 		}
 		
+		/**
+		 * Converts a string into an arraylist of integers.
+		 * @param s
+		 */
+		private ArrayList<Integer> StringToArrayList_Int(String s){
+			ArrayList<Integer> l = new ArrayList<Integer>();
+			for(String c: s.split("")){
+				int i = Integer.parseInt(c);
+				l.add(i);
+			}
+			
+			return l;
+		}
 		
 		
 		public void chooseMusic() throws InterruptedException{
@@ -493,9 +470,4 @@ public class FrontEnd extends JFrame {
 				e.printStackTrace();
 			}
 		}
-		
-		//to-do list:
-		//link save/load to grid
-		
-	
 }
