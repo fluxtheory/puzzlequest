@@ -122,7 +122,9 @@ public class Grid extends JPanel implements KeyListener{
 		return gg;
 	}
 	
-	
+	public int returnUndoCounter(){
+		return undoCounter;
+	}
 	
 	
 	@Override
