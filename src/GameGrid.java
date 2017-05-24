@@ -6,20 +6,20 @@ import java.util.ArrayList;
  */
 public class GameGrid {
 
-	public static final int EMPTY_SPACE = 0;
-	public static final int WALL = 1;
-	public static final int GROUND = 2;
-	public static final int BOX = 3;
-	public static final int OBJECTIVE = 4;
-	public static final int PLAYER_DOWN = 5;
-	public static final int PLAYER_LEFT = 6;
-	public static final int PLAYER_RIGHT = 7;
-	public static final int PLAYER_UP = 8;
-	public static final int OBJECTIVE_BOX = 9;
-	public static final int OBJECTIVE_PLAYER_DOWN = 10;
-	public static final int OBJECTIVE_PLAYER_LEFT = 11;
-	public static final int OBJECTIVE_PLAYER_RIGHT = 12;
-	public static final int OBJECTIVE_PLAYER_UP = 13;
+	public final int EMPTY_SPACE = 0;
+	public final int WALL = 1;
+	public final int GROUND = 2;
+	public final int BOX = 3;
+	public final int OBJECTIVE = 4;
+	public final int PLAYER_DOWN = 5;
+	public final int PLAYER_LEFT = 6;
+	public final int PLAYER_RIGHT = 7;
+	public final int PLAYER_UP = 8;
+	public final int OBJECTIVE_BOX = 9;
+	public final int OBJECTIVE_PLAYER_DOWN = 10;
+	public final int OBJECTIVE_PLAYER_LEFT = 11;
+	public final int OBJECTIVE_PLAYER_RIGHT = 12;
+	public final int OBJECTIVE_PLAYER_UP = 13;
 	
 	private ArrayList<ArrayList<Integer>> grid;
 	private int rowCount;
