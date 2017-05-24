@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -26,17 +27,19 @@ public class Grid extends JPanel implements KeyListener{
 	boolean secondary;
 	int playerID;
 	
+	
 	public Grid(boolean _secondary){
-		
 		secondary = _secondary; //second panel for coop double games
 		
 		if(secondary){
 			playerID = 2;
+			setBounds(600,0,600,600);
 		} else {
 			playerID = 1;
+			setBounds(0,0,600,600);
 		}
+
 		
-		setBounds(0,0,600,600);
 		addKeyListener(this);
 		for(int i =0; i < 14; i++){
 			myImage[i] = Toolkit.getDefaultToolkit().getImage("pic/"+ i + ".gif");
@@ -47,6 +50,10 @@ public class Grid extends JPanel implements KeyListener{
 	public void updateGrid(GameGrid gameGrid){
 		gg = gameGrid;
 		pl = new PlayerController(gg);
+	}
+	
+	public int returnUndoCounter(){
+		return undoCounter;
 	}
 	
 	
@@ -122,9 +129,7 @@ public class Grid extends JPanel implements KeyListener{
 		return gg;
 	}
 	
-	public int returnUndoCounter(){
-		return undoCounter;
-	}
+	
 	
 	
 	@Override
@@ -143,7 +148,8 @@ public class Grid extends JPanel implements KeyListener{
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		if(!secondary){
+		
+		
 			if(e.getKeyCode()==KeyEvent.VK_UP){
 				pl.moveUp(gg);
 				repaint();
@@ -171,37 +177,6 @@ public class Grid extends JPanel implements KeyListener{
 					//
 				}
 			}
-			
-		} else {
-			if(e.getKeyCode()==KeyEvent.VK_W){
-				pl.moveUp(gg);
-				repaint();
-			}
-			if(e.getKeyCode()==KeyEvent.VK_S){
-				pl.moveDown(gg);
-				repaint();
-			}
-			if(e.getKeyCode()==KeyEvent.VK_A){
-				pl.moveLeft(gg);
-				repaint();
-			}
-			if(e.getKeyCode()==KeyEvent.VK_D){
-				pl.moveRight(gg);
-				repaint();
-			}
-			if(pl.iswin(gg)){
-				String msg = "Player" + playerID + " Wins!";
-				int type = JOptionPane.YES_NO_OPTION;
-				String title = "Pass";
-				int choice = 0;
-				choice = JOptionPane.showConfirmDialog(null, msg, title, type);
-				if(choice == 1) System.exit(0);
-				else if(choice == 0){
-					//
-				}
-			}
-		}
-		
 	}
 
 	@Override
