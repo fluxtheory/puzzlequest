@@ -40,6 +40,7 @@ public class FrontEnd extends JFrame {
 	private GameGrid currentGame;
 	private JMenuItem save;
 	public MediaPlayer m;
+	private int lastSliderVal = 50;
 	
 		public FrontEnd(){
 			JFXPanel fxPanel = new JFXPanel();
@@ -60,11 +61,13 @@ public class FrontEnd extends JFrame {
 			setTitle("Warehouse Boss");
 			setDefaultCloseOperation(EXIT_ON_CLOSE);
 			setLocationByPlatform(true);
-	        setResizable(false);
-	        pack();
-	        setLocationRelativeTo(null);
-	        try {
+	     		setResizable(false);
+	        	pack();
+	        	setLocationRelativeTo(null);
+			
+	       		try {
 				chooseMusic();
+				m.setVolume(0.5);
 				m.play();
 				
 			} catch (InterruptedException e) {
@@ -78,12 +81,12 @@ public class FrontEnd extends JFrame {
 	public class MenuScreen extends JPanel{       //currently startscreen.
 		
 		private List<String> menuItems;
-	    private String focusedItem;
+	    	private String focusedItem;
 		private Map<String, Rectangle> menuButtons;
 		private BufferedImage img;
 		private Image[] titleCache = new Image[14];
-	    private Dimension imgSize;
-	    private GameMenuPainter painter;
+	   	private Dimension imgSize;
+	   	private GameMenuPainter painter;
 	    
 		
 		public MenuScreen(List<String> _menuItems, boolean title, boolean background){
@@ -95,7 +98,7 @@ public class FrontEnd extends JFrame {
 				try {
 					img = ImageIO.read(new File("unnamed.png"));
 					imgSize = new Dimension(img.getWidth(),img.getHeight());
-			        setPreferredSize(imgSize);
+			       		setPreferredSize(imgSize);
 		
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
@@ -104,8 +107,7 @@ public class FrontEnd extends JFrame {
 				}
 				
 			} else {
-				setBackground(Color.BLACK);
-				
+				setBackground(Color.BLACK);	
 			}
 			
 			if(title){
@@ -152,7 +154,12 @@ public class FrontEnd extends JFrame {
 	                    		createGameSpace();
 	                    		
 	                    	} else if(newItem == "Back"){
-	                    		//*
+	                    		setResizable(true);
+	        			setPreferredSize(homePanel.getPreferredSize());
+	        			setContentPane(homePanel);
+	        			setResizable(false);
+	        			setLocationRelativeTo(null);
+	        			pack();
 	                    		
 	                    	}
 	                        
@@ -185,7 +192,7 @@ public class FrontEnd extends JFrame {
 	        	homePanel = (JPanel) getContentPane();
 	        	homePanel.setPreferredSize(imgSize);
 	        }
-		}
+	}
 	
 		/*@Override
 	    public void invalidate() {
@@ -251,30 +258,31 @@ public class FrontEnd extends JFrame {
 			ret.addActionListener((ActionEvent event)->{
 				
 				if(currentGameState){ 
-					//check if in game, flash a warning dialogue      
 					
+					String message = "Are you sure? You will lose all progress if you quit now!";
+					gameConfirmation("return", message, this);
+					
+				} else { 
+					setResizable(true);
+					setPreferredSize(homePanel.getPreferredSize());
+					setContentPane(homePanel);
+					setResizable(false);
+					setLocationRelativeTo(null);
+					pack();
 				}
-				
-				currentGameState = false;
-				setResizable(true);
-				setPreferredSize(homePanel.getPreferredSize());
-				
-				setContentPane(homePanel);
-				setResizable(false);
-				pack();
-				setLocationRelativeTo(null);
-				
-				
 
 			});
 			
 			JMenuItem newGame = new JMenuItem("New Game");
 			newGame.addActionListener((ActionEvent event)-> {
+				
 				if(currentGameState == true){
-					//create new JPanel
-					createGameSpace();
+					
+					String message = "Are you sure? You will lose all progress if you start a new game!";
+					gameConfirmation("new", message, this);
+					
 				} else {
-					createGameSpace();
+					gameModePicker();
 				}
 				
 			});
@@ -286,7 +294,14 @@ public class FrontEnd extends JFrame {
 			
 			JMenuItem loadSave = new JMenuItem("Load Game");
 			loadSave.addActionListener((ActionEvent event)-> {
-				loadGame();
+				if(currentGameState == true){
+					
+					String message = "Loading an old save will cause all unsaved progress to be lost!";
+					gameConfirmation("load", message, this);
+					
+				} else {
+					loadGame();
+				}
 			});
 			
 			JMenuItem exit = new JMenuItem("Exit");
@@ -351,9 +366,7 @@ public class FrontEnd extends JFrame {
 			setResizable(false);
 			currentGameState = true;
 			playMusic();
-			
 			currentGame = grid.returnGame();
-			
 			save.setEnabled(true);
 		}
 		
@@ -365,38 +378,29 @@ public class FrontEnd extends JFrame {
 		}
 		
 		public void settingsPage(){   
-			// what settings?
-			//audio
-			//map size
+			
 			//game resolution etc
-			//disable grid
-			//num crates
-			//other features
-			TitledBorder title;
-			JFrame sett = new JFrame();
-			JPanel difficulty = new JPanel();
-			JPanel audio = new JPanel();
-			
-			title = BorderFactory.createTitledBorder("Audio");
-			audio.setBorder(title);
-			
-			title = BorderFactory.createTitledBorder("Difficulty");
-			difficulty.setBorder(title);
-			
-			
-			sett.setLayout(new GridBagLayout());
-			GridBagConstraints c = new GridBagConstraints();
-			
-			                //natural height, maximum width
-			c.fill = GridBagConstraints.HORIZONTAL;
-			
-			sett.add(audio);
-			sett.add(difficulty);
-			
-			
-			sett.setSize(800, 600);
-			sett.setLocationRelativeTo(rootPane);
-			sett.setVisible(true);
+			JFrame setting = new JFrame("Settings");
+	        TitledBorder audio = new TitledBorder("Audio");
+	        TitledBorder game = new TitledBorder("Difficulty");
+	        TitledBorder ginterface = new TitledBorder("Interface");
+	        
+	        Border paneEdge = BorderFactory.createEmptyBorder(0,10,10,10);
+
+	        //First pane: simple borders
+	        JPanel BorderComp = new JPanel();
+	        BorderComp.setBorder(paneEdge);
+	        BorderComp.setLayout(new BoxLayout(BorderComp, BoxLayout.Y_AXIS));
+	        
+	      //addInterfaceComp(ginterface, BorderComp);
+	        addAudioComp(audio, BorderComp);
+	        addGameSettComp(game, BorderComp);
+	        
+	        setting.setContentPane(BorderComp);
+	        setting.pack();
+	        setting.setLocationRelativeTo(null);
+	        setting.setResizable(false);
+	        setting.setVisible(true);
 		}
 		
 		public void saveGame(GameGrid gg){
@@ -438,23 +442,79 @@ public class FrontEnd extends JFrame {
 			
 		}
 		
-		/**
-		 * Converts a string into an arraylist of integers.
-		 * @param s
-		 */
-		private ArrayList<Integer> StringToArrayList_Int(String s){
-			ArrayList<Integer> l = new ArrayList<Integer>();
-			for(String c: s.split("")){
-				int i = Integer.parseInt(c);
-				l.add(i);
-			}
+		
+		void addAudioComp(Border border, Container container) {
+			JPanel comp = new JPanel(new GridLayout(1, 1), false);
 			
-			return l;
+			JCheckBox muteButton = new JCheckBox("Mute");
+			
+			muteButton.addActionListener((ActionEvent event)-> {
+				if(muteButton.isSelected()){
+					m.setMute(true);
+				} else {
+					m.setMute(false);
+				}
+			});
+			JSlider volume = new JSlider(0, 100);
+			volume.setValue(lastSliderVal);
+			volume.setPaintTicks(true);
+			volume.setMajorTickSpacing(10);
+			volume.addChangeListener(new SliderListener());
+			
+			comp.add(muteButton);
+			comp.add(volume);
+			comp.setBorder(border);
+			
+			container.add(Box.createRigidArea(new Dimension(0, 10)));
+			container.add(comp);
 		}
 		
+		public class SliderListener implements ChangeListener {
+		    public void stateChanged(ChangeEvent e) {
+		        JSlider source = (JSlider)e.getSource();
+		        int sliderVal = source.getValue();
+		        lastSliderVal = sliderVal;
+		        //System.out.println("Initial Volume is " + m.getVolume());
+		        Double vol = (double) (sliderVal) /100;
+		        //System.out.println("Converted Volume is " + vol);
+		        m.setVolume(vol);  //takes in a double value.
+
+		    }
+		}
+		
+		void addInterfaceComp(Border border, Container container) {
+			JPanel comp = new JPanel(new GridLayout(1, 1), false);
+			JLabel label = new JLabel("placeholder", JLabel.CENTER);
+			comp.add(label);
+			comp.setBorder(border);
+
+			container.add(Box.createRigidArea(new Dimension(0, 10)));
+			container.add(comp);
+		}
+		
+		void addGameSettComp(Border border, Container container) {   //map size also?
+			JPanel comp = new JPanel(new GridLayout(1, 2), false);
+			comp.setBorder(border);
+			
+			JLabel nBox = new JLabel("Box");
+			JLabel diff = new JLabel("Difficulty");
+			String[] boxCount = {"1","2","3","4","5"};
+			String[] mapSize = {"Small", "Medium", "Large"};
+			JComboBox numBoxes = new JComboBox(boxCount);
+			JComboBox mSize = new JComboBox(mapSize);
+			
+			comp.add(nBox);
+			comp.add(numBoxes);
+			comp.add(Box.createRigidArea(new Dimension(10, 10)));
+			comp.add(diff);
+			comp.add(mSize);
+			container.add(Box.createRigidArea(new Dimension(0, 10)));
+			container.add(comp);
+		}
+	
 		
 		public void chooseMusic() throws InterruptedException{
-			Random randomGenerator = new Random();
+		    Random randomGenerator = new Random();
 			
 		    int randomInt = randomGenerator.nextInt(14);
 		    
@@ -486,5 +546,36 @@ public class FrontEnd extends JFrame {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+		}
+	
+		public void gameConfirmation(String purpose, String message, JFrame frame){
+			
+			int reply = JOptionPane.showConfirmDialog(this,message);
+			
+			if(reply == JOptionPane.YES_OPTION){
+				
+			
+				if(purpose.equals("return")){
+				
+					currentGameState = false;
+					setResizable(true);
+					setPreferredSize(homePanel.getPreferredSize());
+					
+					setContentPane(homePanel);
+					setResizable(false);
+					pack();
+					setLocationRelativeTo(null);
+					
+				} else if (purpose.equals("new")){
+					
+					gameModePicker();    //this is broken.
+					
+				} else if (purpose.equals("load")){
+					
+					loadGame();
+					
+				}
+			}
+
 		}
 }
