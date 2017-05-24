@@ -22,13 +22,24 @@ public class Grid extends JPanel implements KeyListener{
 	GameGrid ggtemp = lm.createLevel(2);
 	Image[] myImage = new Image[14];
 	PlayerController pl = new PlayerController(gg);
-	
+	int undoCounter = 10;
 	
 	public Grid(){
+		
+		JButton restart = new JButton("Restart");
+		restart.addActionListener((ActionEvent event)->{
+			
+		});
 		JButton undo = new JButton("Undo");
 		undo.addActionListener((ActionEvent event)->{
-			undo();
+			if(undoCounter > 0){
+				undo();
+				((JButton) event.getSource()).setText("Undo (" + undoCounter + ")");
+			} else {
+				JOptionPane.showMessageDialog(this, "No more moves left!");
+			}
 		});
+		add(restart);
 		add(undo);
 		
 		setBounds(0,0,600,600);
@@ -51,6 +62,7 @@ public class Grid extends JPanel implements KeyListener{
 		}
 		
 		else{
+			undoCounter--;
 			switch(pl.backNext()){
 		case 10: pl.backRight(10, pl.backOrig(), gg);
 			break;
