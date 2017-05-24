@@ -153,7 +153,6 @@ public class PlayerController {
 			}
 			manCol++;
 		}
-		printStack();
 	}
 	
 	public void moveLeft(GameGrid gg){
@@ -264,7 +263,6 @@ public class PlayerController {
 			}
 			manCol--;
 		}
-		printStack();
 	}
 	
 	public void moveUp(GameGrid gg){
