@@ -23,10 +23,18 @@ public class Grid extends JPanel implements KeyListener{
 	Image[] myImage = new Image[14];
 	PlayerController pl = new PlayerController(gg);
 	int undoCounter = 10;
+	boolean secondary;
+	int playerID;
 	
-	public Grid(){
+	public Grid(boolean _secondary){
 		
+		secondary = _secondary; //second panel for coop double games
 		
+		if(secondary){
+			playerID = 2;
+		} else {
+			playerID = 1;
+		}
 		
 		setBounds(0,0,600,600);
 		addKeyListener(this);
