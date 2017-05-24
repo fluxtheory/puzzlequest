@@ -538,9 +538,12 @@ public class FrontEnd extends JFrame {
 		
 		public void playMusic(){
 			try {
+				Double vol = (double) (lastSliderVal) /100;
+				
 				m.stop();
 				chooseMusic();
 				m.play();
+				m.setVolume(vol);
 				
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
