@@ -162,14 +162,10 @@ public class Grid extends JPanel implements KeyListener{
 		}
 		if(pl.iswin(gg)){
 			String msg = "Congratulations, you passed level " + "2" + "!!!";
-			int type = JOptionPane.YES_NO_OPTION;
+			int type = JOptionPane.DEFAULT_OPTION;
 			String title = "Pass";
-			int choice = 0;
-			choice = JOptionPane.showConfirmDialog(null, msg, title, type);
-			if(choice == 1) System.exit(0);
-			else if(choice == 0){
-				//
-			}
+			int choice = JOptionPane.showConfirmDialog(null, msg, title, type);
+			if(choice == 0) System.exit(0);
 		}
 		
 	}
