@@ -155,9 +155,9 @@ public class FrontEnd extends JFrame {
 	                    		
 	                    	} else if(newItem == "Solo Play"){
 	                    		createSingleGameSpace();
-	                    		
-	                    	} else if(newItem == "Timed Game"){
-	                    		createSingleGameSpace();
+					
+				}else if(newItem == "StepLimit Game"){	
+	                    		createStepLimitGameSpace();
 	                    		
 	                    	} else if(newItem == "Co-op Game"){
 	                    		createDoubleGameSpace();
@@ -372,7 +372,7 @@ public class FrontEnd extends JFrame {
 			
 			List<String> menu = new ArrayList<>();
 			menu.add("Solo Play");
-			menu.add("Timed Game");
+			menu.add("StepLimit Game");
 			menu.add("Co-op Game");
 			menu.add("Back");
 			MenuScreen mode = new MenuScreen(menu, false,false);
@@ -398,6 +398,23 @@ public class FrontEnd extends JFrame {
 			currentGrid = grid;
 			save.setEnabled(true);
 			
+		}
+	
+		public void createStepLimitGameSpace(){
+
+			StepGrid grid = new StepGrid();
+			add(grid);
+			grid.requestFocus();
+			setContentPane(grid);
+			validate();
+			setSize(new Dimension(600,600));
+			setResizable(false);
+			currentGameState = true;
+			playMusic();
+			
+			currentGame = grid.returnGame();
+			
+			save.setEnabled(true);
 		}
 		
 		public void createDoubleGameSpace(){
