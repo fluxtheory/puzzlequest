@@ -39,6 +39,11 @@ public class Grid extends JPanel implements KeyListener{
 	
 	}
 	
+	public void updateGrid(GameGrid gameGrid){
+		gg = gameGrid;
+		pl = new PlayerController(gg);
+	}
+	
 	
 	public void undo(){
 		if(pl.getUndoStackNext().isEmpty()){
@@ -130,6 +135,7 @@ public class Grid extends JPanel implements KeyListener{
 
 	@Override
 	public void keyPressed(KeyEvent e) {
+		System.out.println("Test");
 		if(e.getKeyCode()==KeyEvent.VK_UP){
 			pl.moveUp(gg);
 			repaint();
