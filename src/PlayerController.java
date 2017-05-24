@@ -12,6 +12,8 @@ public class PlayerController {
 	private int[] player = new int[2];
 	
 	Stack<Integer> undoStackOrig = new Stack<Integer>();
+	int stackCounter = 0;
+	int stackCounterOri = 0;
 	Stack<Integer> undoStackNext = new Stack<Integer>();
 	
 	private boolean canMove;
@@ -47,7 +49,13 @@ public class PlayerController {
 		if(gg.getCoordinateValue(manRow, manCol + 1) == gg.GROUND){
 			gg.SetCoordinateValue(manRow, manCol + 1, gg.PLAYER_RIGHT);
 			canMove = true;
-			undoStackNext.push(10);
+			if(stackCounter != 10){
+				undoStackNext.push(10);
+				stackCounter++;
+			}else{
+				RemoveOldest(undoStackNext);
+				undoStackNext.push(10);
+			}
 		}
 
 		else if(gg.getCoordinateValue(manRow, manCol + 1) == gg.BOX){
@@ -56,21 +64,39 @@ public class PlayerController {
 				gg.SetCoordinateValue(manRow, manCol + 2, gg.BOX);
 				gg.SetCoordinateValue(manRow, manCol + 1, gg.PLAYER_RIGHT);
 				canMove = true;
-				undoStackNext.push(11);
+				if(stackCounter != 10){
+					undoStackNext.push(11);
+					stackCounter++;
+				}else{
+					RemoveOldest(undoStackNext);
+					undoStackNext.push(11);
+				}
 			}
 			
 			else if(gg.getCoordinateValue(manRow, manCol + 2) == gg.OBJECTIVE){
 				gg.SetCoordinateValue(manRow, manCol + 2, gg.OBJECTIVE_BOX);
 				gg.SetCoordinateValue(manRow, manCol + 1, gg.PLAYER_RIGHT);
 				canMove = true;
-				undoStackNext.push(12);
+				if(stackCounter != 10){
+					undoStackNext.push(12);
+					stackCounter++;
+				}else{
+					RemoveOldest(undoStackNext);
+					undoStackNext.push(12);
+				}
 			}
 		}
 		
 		else if(gg.getCoordinateValue(manRow, manCol + 1) == gg.OBJECTIVE){
 			gg.SetCoordinateValue(manRow, manCol + 1, gg.OBJECTIVE_PLAYER_RIGHT);
 			canMove = true;
-			undoStackNext.push(13);
+			if(stackCounter != 10){
+				undoStackNext.push(13);
+				stackCounter++;
+			}else{
+				RemoveOldest(undoStackNext);
+				undoStackNext.push(13);
+			}
 		}
 		
 		else if(gg.getCoordinateValue(manRow, manCol + 1) == gg.OBJECTIVE_BOX){
@@ -78,14 +104,27 @@ public class PlayerController {
 				gg.SetCoordinateValue(manRow, manCol + 2, gg.BOX);
 				gg.SetCoordinateValue(manRow, manCol + 1, gg.OBJECTIVE_PLAYER_RIGHT);
 				canMove = true;
-				undoStackNext.push(14);
+				if(stackCounter != 10){
+					undoStackNext.push(14);
+					stackCounter++;
+				}else{
+					RemoveOldest(undoStackNext);
+					undoStackNext.push(14);
+				}
 			}
 			
 			else if(gg.getCoordinateValue(manRow, manCol + 2) == gg.OBJECTIVE){
 				gg.SetCoordinateValue(manRow, manCol + 2, gg.OBJECTIVE_BOX);
 				gg.SetCoordinateValue(manRow, manCol + 1, gg.OBJECTIVE_PLAYER_RIGHT);
 				canMove = true;
-				undoStackNext.push(15);
+				if(stackCounter != 10){
+					undoStackNext.push(15);
+					stackCounter++;
+				}
+				else{
+					RemoveOldest(undoStackNext);
+					undoStackNext.push(15);
+				}
 			}
 		}
 		
@@ -93,15 +132,28 @@ public class PlayerController {
 		if(canMove){
 			if(gg.getCoordinateValue(manRow, manCol) >= gg.PLAYER_DOWN && gg.getCoordinateValue(manRow, manCol) <= gg.PLAYER_UP){
 				gg.SetCoordinateValue(manRow, manCol, gg.GROUND);
-				undoStackOrig.push(10);
+				if(stackCounterOri != 10){
+					undoStackOrig.push(10);
+					stackCounterOri++;
+				}else{
+					RemoveOldest2(undoStackOrig);
+					undoStackOrig.push(10);
+				}
 			}
 			
 			else if(gg.getCoordinateValue(manRow, manCol) >= gg.OBJECTIVE_PLAYER_DOWN && gg.getCoordinateValue(manRow, manCol) <= gg.OBJECTIVE_PLAYER_UP){
 				gg.SetCoordinateValue(manRow, manCol, gg.OBJECTIVE);
-				undoStackOrig.push(11);
+				if(stackCounterOri != 10){
+					undoStackOrig.push(11);
+					stackCounterOri++;
+				}else{
+					RemoveOldest2(undoStackOrig);
+					undoStackOrig.push(11);
+				}
 			}
 			manCol++;
 		}
+		printStack();
 	}
 	
 	public void moveLeft(GameGrid gg){
@@ -110,7 +162,13 @@ public class PlayerController {
 		if(gg.getCoordinateValue(manRow, manCol - 1) == gg.GROUND){
 			gg.SetCoordinateValue(manRow, manCol - 1, gg.PLAYER_LEFT);
 			canMove = true;
-			undoStackNext.push(20);
+			if(stackCounter != 10){
+				undoStackNext.push(20);
+				stackCounter++;
+			}else{
+				RemoveOldest(undoStackNext);
+				undoStackNext.push(20);
+			}
 		}
 
 		else if(gg.getCoordinateValue(manRow, manCol - 1) == gg.BOX){
@@ -119,22 +177,39 @@ public class PlayerController {
 				gg.SetCoordinateValue(manRow, manCol - 2, gg.BOX);
 				gg.SetCoordinateValue(manRow, manCol - 1, gg.PLAYER_LEFT);
 				canMove = true;
-				undoStackNext.push(21);
-				
+				if(stackCounter != 10){
+					undoStackNext.push(21);
+					stackCounter++;
+				}else{
+					RemoveOldest(undoStackNext);
+					undoStackNext.push(21);
+				}
 			}
 			
 			else if(gg.getCoordinateValue(manRow, manCol - 2) == gg.OBJECTIVE){
 				gg.SetCoordinateValue(manRow, manCol - 2, gg.OBJECTIVE_BOX);
 				gg.SetCoordinateValue(manRow, manCol - 1, gg.PLAYER_LEFT);
 				canMove = true;
-				undoStackNext.push(22);
+				if(stackCounter != 10){
+					undoStackNext.push(22);
+					stackCounter++;
+				}else{
+					RemoveOldest(undoStackNext);
+					undoStackNext.push(22);
+				}
 			}
 		}
 		
 		else if(gg.getCoordinateValue(manRow, manCol - 1) == gg.OBJECTIVE){
 			gg.SetCoordinateValue(manRow, manCol - 1, gg.OBJECTIVE_PLAYER_LEFT);
 			canMove = true;
-			undoStackNext.push(23);
+			if(stackCounter != 10){
+				undoStackNext.push(23);
+				stackCounter++;
+			}else{
+				RemoveOldest(undoStackNext);
+				undoStackNext.push(23);
+			}
 		}
 		
 		else if(gg.getCoordinateValue(manRow, manCol - 1) == gg.OBJECTIVE_BOX){
@@ -142,29 +217,54 @@ public class PlayerController {
 				gg.SetCoordinateValue(manRow, manCol - 2, gg.BOX);
 				gg.SetCoordinateValue(manRow, manCol - 1, gg.OBJECTIVE_PLAYER_LEFT);
 				canMove = true;
-				undoStackNext.push(24);
+				if(stackCounter != 10){
+					undoStackNext.push(24);
+					stackCounter++;
+				}else{
+					RemoveOldest(undoStackNext);
+					undoStackNext.push(24);
+				}
 			}
 			
 			else if(gg.getCoordinateValue(manRow, manCol - 2) == gg.OBJECTIVE){
 				gg.SetCoordinateValue(manRow, manCol - 2, gg.OBJECTIVE_BOX);
 				gg.SetCoordinateValue(manRow, manCol - 1, gg.OBJECTIVE_PLAYER_LEFT);
 				canMove = true;
-				undoStackNext.push(25);
+				if(stackCounter != 10){
+					undoStackNext.push(25);
+					stackCounter++;
+				}else{
+					RemoveOldest(undoStackNext);
+					undoStackNext.push(25);
+				}
 			}
 		}
 		// Then consider current position
 		if(canMove){
 			if(gg.getCoordinateValue(manRow, manCol) >= gg.PLAYER_DOWN && gg.getCoordinateValue(manRow, manCol) <= gg.PLAYER_UP){
 				gg.SetCoordinateValue(manRow, manCol, gg.GROUND);
-				undoStackOrig.push(20);
+				if(stackCounterOri != 10){
+					undoStackOrig.push(20);
+					stackCounterOri++;
+				}else{
+					RemoveOldest2(undoStackOrig);
+					undoStackOrig.push(20);
+				}
 			}
 			
 			else if(gg.getCoordinateValue(manRow, manCol) >= gg.OBJECTIVE_PLAYER_DOWN && gg.getCoordinateValue(manRow, manCol) <= gg.OBJECTIVE_PLAYER_UP){
 				gg.SetCoordinateValue(manRow, manCol, gg.OBJECTIVE);
-				undoStackOrig.push(21);
+				if(stackCounterOri != 10){
+					undoStackOrig.push(21);
+					stackCounterOri++;
+				}else{
+					RemoveOldest2(undoStackOrig);
+					undoStackOrig.push(21);
+				}
 			}
 			manCol--;
 		}
+		printStack();
 	}
 	
 	public void moveUp(GameGrid gg){
@@ -173,30 +273,54 @@ public class PlayerController {
 		if(gg.getCoordinateValue(manRow - 1, manCol) == gg.GROUND){
 			gg.SetCoordinateValue(manRow - 1, manCol, gg.PLAYER_UP);
 			canMove = true;
-			undoStackNext.push(30);
+			if(stackCounter != 10){
+				undoStackNext.push(30);
+				stackCounter++;
+			}else{
+				RemoveOldest(undoStackNext);
+				undoStackNext.push(30);
+			}
 		}
 
 		else if(gg.getCoordinateValue(manRow - 1, manCol) == gg.BOX){
 
 			if(gg.getCoordinateValue(manRow - 2, manCol) == gg.GROUND){
-				gg.SetCoordinateValue(manRow - 1, manCol, gg.BOX);
+				gg.SetCoordinateValue(manRow - 2, manCol, gg.BOX);
 				gg.SetCoordinateValue(manRow - 1, manCol, gg.PLAYER_UP);
 				canMove = true;
-				undoStackNext.push(31);
+				if(stackCounter != 10){
+					undoStackNext.push(31);
+					stackCounter++;
+				}else{
+					RemoveOldest(undoStackNext);
+					undoStackNext.push(31);
+				}
 			}
 			
 			else if(gg.getCoordinateValue(manRow - 2, manCol) == gg.OBJECTIVE){
 				gg.SetCoordinateValue(manRow - 2, manCol, gg.OBJECTIVE_BOX);
 				gg.SetCoordinateValue(manRow - 1, manCol, gg.PLAYER_UP);
 				canMove = true;
-				undoStackNext.push(32);
+				if(stackCounter != 10){
+					undoStackNext.push(32);
+					stackCounter++;
+				}else{
+					RemoveOldest(undoStackNext);
+					undoStackNext.push(32);
+				}
 			}
 		}
 		
 		else if(gg.getCoordinateValue(manRow - 1, manCol) == gg.OBJECTIVE){
 			gg.SetCoordinateValue(manRow - 1, manCol, gg.OBJECTIVE_PLAYER_UP);
 			canMove = true;
-			undoStackNext.push(33);
+			if(stackCounter != 10){
+				undoStackNext.push(33);
+				stackCounter++;
+			}else{
+				RemoveOldest(undoStackNext);
+				undoStackNext.push(33);
+			}
 		}
 		
 		else if(gg.getCoordinateValue(manRow - 1, manCol) == gg.OBJECTIVE_BOX){
@@ -204,26 +328,50 @@ public class PlayerController {
 				gg.SetCoordinateValue(manRow - 2, manCol, gg.BOX);
 				gg.SetCoordinateValue(manRow - 1, manCol, gg.OBJECTIVE_PLAYER_UP);
 				canMove = true;
-				undoStackNext.push(34);
+				if(stackCounter != 10){
+					undoStackNext.push(34);
+					stackCounter++;
+				}else{
+					RemoveOldest(undoStackNext);
+					undoStackNext.push(34);
+				}
 			}
 			
 			else if(gg.getCoordinateValue(manRow - 2, manCol) == gg.OBJECTIVE){
 				gg.SetCoordinateValue(manRow - 2, manCol, gg.OBJECTIVE_BOX);
 				gg.SetCoordinateValue(manRow - 1, manCol, gg.OBJECTIVE_PLAYER_RIGHT);
 				canMove = true;
-				undoStackNext.push(35);
+				if(stackCounter != 10){
+					undoStackNext.push(35);
+					stackCounter++;
+				}else{
+					RemoveOldest(undoStackNext);
+					undoStackNext.push(35);
+				}
 			}
 		}
 		// Then consider current position
 		if(canMove){
 			if(gg.getCoordinateValue(manRow, manCol) >= gg.PLAYER_DOWN && gg.getCoordinateValue(manRow, manCol) <= gg.PLAYER_UP){
 				gg.SetCoordinateValue(manRow, manCol, gg.GROUND);
-				undoStackOrig.push(30);
+				if(stackCounterOri != 10){
+					undoStackOrig.push(30);
+					stackCounterOri++;
+				}else{
+					RemoveOldest2(undoStackOrig);
+					undoStackOrig.push(30);
+				}
 			}
 			
 			else if(gg.getCoordinateValue(manRow, manCol) >= gg.OBJECTIVE_PLAYER_DOWN && gg.getCoordinateValue(manRow, manCol) <= gg.OBJECTIVE_PLAYER_UP){
 				gg.SetCoordinateValue(manRow, manCol, gg.OBJECTIVE);
-				undoStackOrig.push(31);
+				if(stackCounterOri != 10){
+					undoStackOrig.push(31);
+					stackCounterOri++;
+				}else{
+					RemoveOldest2(undoStackOrig);
+					undoStackOrig.push(31);
+				}
 			}
 			manRow--;
 		}
@@ -235,7 +383,13 @@ public class PlayerController {
 		if(gg.getCoordinateValue(manRow + 1, manCol) == gg.GROUND){
 			gg.SetCoordinateValue(manRow + 1, manCol, gg.PLAYER_DOWN);
 			canMove = true;
-			undoStackNext.push(40);
+			if(stackCounter != 10){
+				undoStackNext.push(40);
+				stackCounter++;
+			}else{
+				RemoveOldest(undoStackNext);
+				undoStackNext.push(40);
+			}
 		}
 
 		else if(gg.getCoordinateValue(manRow + 1, manCol) == gg.BOX){
@@ -243,21 +397,39 @@ public class PlayerController {
 				gg.SetCoordinateValue(manRow + 2, manCol, gg.BOX);
 				gg.SetCoordinateValue(manRow + 1, manCol, gg.PLAYER_DOWN);
 				canMove = true;
-				undoStackNext.push(41);
+				if(stackCounter != 10){
+					undoStackNext.push(41);
+					stackCounter++;
+				}else{
+					RemoveOldest(undoStackNext);
+					undoStackNext.push(41);
+				}
 			}
 			
 			else if(gg.getCoordinateValue(manRow + 2, manCol) == gg.OBJECTIVE){
 				gg.SetCoordinateValue(manRow + 2, manCol, gg.OBJECTIVE_BOX);
 				gg.SetCoordinateValue(manRow + 1, manCol, gg.PLAYER_DOWN);
 				canMove = true;
-				undoStackNext.push(42);
+				if(stackCounter != 10){
+					undoStackNext.push(42);
+					stackCounter++;
+				}else{
+					RemoveOldest(undoStackNext);
+					undoStackNext.push(42);
+				}
 			}
 		}
 		
 		else if(gg.getCoordinateValue(manRow + 1, manCol) == gg.OBJECTIVE){
 			gg.SetCoordinateValue(manRow + 1, manCol, gg.OBJECTIVE_PLAYER_DOWN);
 			canMove = true;
-			undoStackNext.push(43);
+			if(stackCounter != 10){
+				undoStackNext.push(43);
+				stackCounter++;
+			}else{
+				RemoveOldest(undoStackNext);
+				undoStackNext.push(43);
+			}
 		}
 		
 		else if(gg.getCoordinateValue(manRow + 1, manCol) == gg.OBJECTIVE_BOX){
@@ -265,26 +437,50 @@ public class PlayerController {
 				gg.SetCoordinateValue(manRow + 2, manCol, gg.BOX);
 				gg.SetCoordinateValue(manRow + 1, manCol, gg.OBJECTIVE_PLAYER_DOWN);
 				canMove = true;
-				undoStackNext.push(44);
+				if(stackCounter != 10){
+					undoStackNext.push(44);
+					stackCounter++;
+				}else{
+					RemoveOldest(undoStackNext);
+					undoStackNext.push(44);
+				}
 			}
 			
 			else if(gg.getCoordinateValue(manRow + 2, manCol) == gg.OBJECTIVE){
 				gg.SetCoordinateValue(manRow + 2, manCol, gg.OBJECTIVE_BOX);
 				gg.SetCoordinateValue(manRow + 1, manCol, gg.OBJECTIVE_PLAYER_DOWN);
 				canMove = true;
-				undoStackNext.push(45);
+				if(stackCounter != 10){
+					undoStackNext.push(45);
+					stackCounter++;
+				}else{
+					RemoveOldest(undoStackNext);
+					undoStackNext.push(45);
+				}
 			}
 		}
 		// Then consider current position
 		if(canMove){
 			if(gg.getCoordinateValue(manRow, manCol) >= gg.PLAYER_DOWN && gg.getCoordinateValue(manRow, manCol) <= gg.PLAYER_UP){
 				gg.SetCoordinateValue(manRow, manCol, gg.GROUND);
-				undoStackOrig.push(40);
+				if(stackCounterOri != 10){
+					undoStackOrig.push(40);
+					stackCounterOri++;
+				}else{
+					RemoveOldest2(undoStackOrig);
+					undoStackOrig.push(40);
+				}
 			}
 			
 			else if(gg.getCoordinateValue(manRow, manCol) >= gg.OBJECTIVE_PLAYER_DOWN && gg.getCoordinateValue(manRow, manCol) <= gg.OBJECTIVE_PLAYER_UP){
 				gg.SetCoordinateValue(manRow, manCol, gg.OBJECTIVE);
-				undoStackOrig.push(41);
+				if(stackCounterOri != 10){
+					undoStackOrig.push(41);
+					stackCounterOri++;
+				}else{
+					RemoveOldest2(undoStackOrig);
+					undoStackOrig.push(41);
+				}
 			}
 			manRow++;
 		}
@@ -472,11 +668,13 @@ public class PlayerController {
 	}
 	
 	public int backNext(){
+		stackCounter--;
 		return undoStackNext.pop();
 	}
 	
 
 	public int backOrig(){
+		stackCounterOri--;
 		return undoStackOrig.pop();
 	}
 	
@@ -508,6 +706,25 @@ public class PlayerController {
 		}
 		System.out.println("");
 	}
-	
+	public void RemoveOldest(Stack<Integer> stack){
+		Stack<Integer> temp = new Stack<Integer>(); 
+		while(!stack.isEmpty()){
+			temp.push(stack.pop());
+		}
+		temp.pop();
+		while(!temp.isEmpty()){
+			stack.push(temp.pop());
+		}
+	}
+	public void RemoveOldest2(Stack<Integer> stack){
+		Stack<Integer> temp = new Stack<Integer>(); 
+		while(!stack.isEmpty()){
+			temp.push(stack.pop());
+		}
+		temp.pop();
+		while(!temp.isEmpty()){
+			stack.push(temp.pop());
+		}
+	}
 	
 }
