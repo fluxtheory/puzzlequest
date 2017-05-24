@@ -1,95 +1,170 @@
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.GridLayout;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.util.ArrayList;
 
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 
 	
-public class Grid extends JPanel{
+public class Grid extends JPanel implements KeyListener{
 
 	
-	// add additional presets for medium, large maps
-	private static Color bkgrd = Color.black;
-	private JPanel[][] panelArray = new JPanel[16][16]; 
-
-	public Grid(int size){
+	LevelManager lm = new LevelManager();
+	LevelManager lmtemp = new LevelManager();
+	GameGrid gg = lm.createLevel(2);
+	GameGrid ggtemp = lm.createLevel(2);
+	Image[] myImage = new Image[14];
+	PlayerController pl = new PlayerController(gg);
 	
-		JPanel mainPanel = new JPanel(new GridLayout(16,16));   //manager divides up space in 3 rows and 3 columns.
-	 
+	
+	public Grid(){
+		JButton undo = new JButton("Undo");
+		undo.addActionListener((ActionEvent event)->{
+			undo();
+		});
+		add(undo);
 		
-		for (int y = 0; y< 16; y++){
-		
-			for (int x = 0; x < 16; x++){
-		
-				panelArray[y][x] = new JPanel(); //creates the panels to populate layout.
-				panelArray[y][x].setBackground(bkgrd);
-				//panelArray[y][x].setBorder(BorderFactory.createLineBorder(Color.WHITE));
-				mainPanel.add(panelArray[y][x]); 
-				
-			}
+		setBounds(0,0,600,600);
+		addKeyListener(this);
+		for(int i =0; i < 14; i++){
+			myImage[i] = Toolkit.getDefaultToolkit().getImage("pic/"+ i + ".gif");
 		}
 	
-		if(size == 1){
+	}
+	
+	
+	public void undo(){
+		if(pl.getUndoStackNext().isEmpty()){
+			JOptionPane.showMessageDialog(this, "You haven't moved!!!");
+		}
+		
+		else{
+			switch(pl.backNext()){
+		case 10: pl.backRight(10, pl.backOrig(), gg);
+			break;
+		case 11: pl.backRight(11, pl.backOrig(), gg);
+			break;
+		case 12: pl.backRight(12, pl.backOrig(), gg);
+			break;
+		case 13: pl.backRight(13, pl.backOrig(), gg);
+			break;
+		case 14: pl.backRight(14, pl.backOrig(), gg);
+			break;
+		case 15: pl.backRight(15, pl.backOrig(), gg);
+			break;
 			
-			 createSmallGrid(panelArray);
-			 
-		} else if (size == 2){
-	
-			createMediumGrid(panelArray);
+		case 20: pl.backLeft(20, pl.backOrig(), gg);
+			break;
+		case 21: pl.backLeft(21, pl.backOrig(), gg);
+			break;
+		case 22: pl.backLeft(22, pl.backOrig(), gg);
+			break;
+		case 23: pl.backLeft(23, pl.backOrig(), gg);
+			break;
+		case 24: pl.backLeft(24, pl.backOrig(), gg);
+			break;
+		case 25: pl.backLeft(25, pl.backOrig(), gg);
+			break;
 			
-		} else if (size == 4){
 
-			createLargeGrid(panelArray);
+		case 30: pl.backUp(30, pl.backOrig(), gg);
+			break;
+		case 31: pl.backUp(31, pl.backOrig(), gg);
+			break;
+		case 32: pl.backUp(32, pl.backOrig(), gg);
+			break;
+		case 33: pl.backUp(33, pl.backOrig(), gg);
+			break;
+		case 34: pl.backUp(34, pl.backOrig(), gg);
+			break;
+		case 35: pl.backUp(35, pl.backOrig(), gg);
+			break;
+			
+		case 40: pl.backDown(40, pl.backOrig(), gg);
+			break;
+		case 41: pl.backDown(41, pl.backOrig(), gg);
+			break;
+		case 42: pl.backDown(42, pl.backOrig(), gg);
+			break;
+		case 43: pl.backDown(43, pl.backOrig(), gg);
+			break;
+		case 44: pl.backDown(44, pl.backOrig(), gg);
+			break;
+		case 45: pl.backDown(45, pl.backOrig(), gg);
+			break;			
+			}
 		}
-		
-		
-		setLayout(new BorderLayout());
-		add(mainPanel,BorderLayout.CENTER);
-	
+		repaint();
+		this.requestFocus();	
 	}
 	
-	public void createSmallGrid(JPanel[][] arr){   //should small resize? ideally yes. or we find some way of centering it.
-		//only activates a small subset of the grids for use and populate with floor and walls sprite.
-		//5x5 working space.  too small, that only leaves what, 9 grids for boxes, player And WALLS.
-		//6x6 in reality.
-		//activated grids turn green.
-		
-		for (int y = 5; y <= 10; y++){
-			for (int x = 5; x <= 10; x++){
-				arr[y][x].setBackground(new Color(13,86,75));;
-				arr[y][x].setBorder(BorderFactory.createLineBorder(Color.WHITE));
+	
+	
+	public GameGrid returnGame(){
+		return gg;
+	}
+	
+	
+	
+	
+	@Override
+	public void paintComponent(Graphics g){
+		for(int i = 0; i < 20; i++){
+			for(int j = 0; j < 20; j++){
+				g.drawImage(myImage[gg.getGrid().get(j).get(i)], i*30, j*30, this);
 			}
 		}
 	}
-	
-	public void createMediumGrid(JPanel[][] arr){	
-		//activates a greater portion
-		//10x10
-		for (int y = 3; y < 13; y++){
-			for (int x = 3; x < 13; x++){
-				arr[y][x].setBackground(new Color(13,86,75));;
-				arr[y][x].setBorder(BorderFactory.createLineBorder(Color.WHITE));
+	@Override
+	public void keyTyped(KeyEvent e) {
+
+		
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		if(e.getKeyCode()==KeyEvent.VK_UP){
+			pl.moveUp(gg);
+			repaint();
+		}
+		if(e.getKeyCode()==KeyEvent.VK_DOWN){
+			pl.moveDown(gg);
+			repaint();
+		}
+		if(e.getKeyCode()==KeyEvent.VK_LEFT){
+			pl.moveLeft(gg);
+			repaint();
+		}
+		if(e.getKeyCode()==KeyEvent.VK_RIGHT){
+			pl.moveRight(gg);
+			repaint();
+		}
+		if(pl.iswin(gg)){
+			String msg = "Congratulations, you passed level " + "2" + "!!!";
+			int type = JOptionPane.YES_NO_OPTION;
+			String title = "Pass";
+			int choice = 0;
+			choice = JOptionPane.showConfirmDialog(null, msg, title, type);
+			if(choice == 1) System.exit(0);
+			else if(choice == 0){
+				//
 			}
 		}
 		
 	}
-	
-	public void createLargeGrid(JPanel[][] arr){
-		//16x16
-		for (int y = 0; y < 16; y++){
-			for (int x = 0; x < 16; x++){
-				arr[y][x].setBackground(new Color(13,86,75));;
-				arr[y][x].setBorder(BorderFactory.createLineBorder(Color.WHITE));
-			}
-		}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
-	
-	
+
 	
 }

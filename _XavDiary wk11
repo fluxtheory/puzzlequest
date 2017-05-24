@@ -1,0 +1,39 @@
+
+Monday - nothing
+Tuesday - nothing
+Wednesday -
+
+    what did I do yesterday? - nothing
+    what will I do today? - revamp startscreen GUI into something more pleasant looking.
+    is anything in my way? - yes, overlapping components is very difficult to achieve in swing. Either I learn all the ins and outs
+    of all the layout managers, or I can learn how to override the paintComponent function in the awt and graphics2d libraries.
+    
+Thursday - 
+
+    what did I do yesterday? - replaced swing jbuttons with custom designed buttons that can detect mouse movement and change colors accordingly
+    what will I do today? - make the new buttons overlap with a background image of my choosing.
+    is anything in my way? - the buttons are designed so that they align in the middle of the screen, but the background image
+                            is rooted at 0,0. Hence any stretching of the frame will break alignment. Need to fix.
+                            
+Friday -
+
+    what did I do yesterday? - did background stuff.
+    what will I do today? - revamp the gameMode selection screen to be more similar to the starting screen.
+    is anything in my way? - lots of the code will be similar to the start screen, gotta figure out a way of abstracting the logic so
+                        I dont have to copy and paste large chunks of code to achieve the same effect.
+    
+    
+Saturday -
+    
+    what did I do yesterday? - light refactoring
+    what will I do today? - add music, add animated title
+    is anything in my way? - some weird issue with javafx not being initialized
+
+Sunday -
+    
+    what did I do yesterday? Added music to the game. 
+    what will I do today? - refactor code.
+    is anything in my way? - function calls outside the hierarchy.
+
+
+
