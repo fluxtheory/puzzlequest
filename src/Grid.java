@@ -24,7 +24,7 @@ public class Grid extends JPanel implements KeyListener{
 	PlayerController pl = new PlayerController(gg);
 	
 	
-	public Grid(int level){
+	public Grid(){
 		JButton undo = new JButton("Undo");
 		undo.addActionListener((ActionEvent event)->{
 			undo();
