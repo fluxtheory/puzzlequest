@@ -1,3 +1,4 @@
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -39,6 +40,7 @@ import javafx.embed.swing.JFXPanel;
 	
 public class FrontEnd extends JFrame {
 	
+	private JFrame master;
 	private JPanel homePanel;
 	private static int lastInt;
 	private boolean currentGameState;
@@ -46,15 +48,17 @@ public class FrontEnd extends JFrame {
 	private Grid currentGrid;
 	private JMenuItem save;
 	private JMenuItem returnB;
+	private JMenuItem restartB;
+	private JMenuItem undoB;
 	public MediaPlayer m;
 	
 	
-	private int lastSliderVal = 50;
+	private int lastSliderVal = 35;
 	
 		public FrontEnd(){
 			JFXPanel fxPanel = new JFXPanel();
 			initUI();
-			
+			master = this;
 		}
 		
 		public void initUI(){
@@ -70,9 +74,9 @@ public class FrontEnd extends JFrame {
 			setTitle("Warehouse Boss");
 			setDefaultCloseOperation(EXIT_ON_CLOSE);
 			setLocationByPlatform(true);
-	     		setResizable(false);
-	        	pack();
-	        	setLocationRelativeTo(null);
+	     	setResizable(false);
+	        pack();
+	        setLocationRelativeTo(null);
 			
 	       		try {
 				chooseMusic();
@@ -90,7 +94,7 @@ public class FrontEnd extends JFrame {
 	public class MenuScreen extends JPanel{       //currently startscreen.
 		
 		private List<String> menuItems;
-	    	private String focusedItem;
+	    private String focusedItem;
 		private Map<String, Rectangle> menuButtons;
 		private BufferedImage img;
 		private Image[] titleCache = new Image[14];
@@ -155,8 +159,8 @@ public class FrontEnd extends JFrame {
 	                    		
 	                    	} else if(newItem == "Solo Play"){
 	                    		createSingleGameSpace();
-					
-				}else if(newItem == "StepLimit Game"){	
+	                    		
+	                    	} else if(newItem == "Timed Game"){
 	                    		createStepLimitGameSpace();
 	                    		
 	                    	} else if(newItem == "Co-op Game"){
@@ -260,8 +264,8 @@ public class FrontEnd extends JFrame {
 		public void menuBar(){
 			
 			JMenuBar menubar = new JMenuBar();
-			JMenu file = new JMenu("File");
-			file.setMnemonic(KeyEvent.VK_F);
+			JMenu g = new JMenu("Game");
+			g.setMnemonic(KeyEvent.VK_F);
 			
 			JMenuItem ret = new JMenuItem("Return");
 			ret.addActionListener((ActionEvent event)->{
@@ -332,15 +336,15 @@ public class FrontEnd extends JFrame {
 				System.exit(0); 
 			});
 			
-			file.add(ret);
-			file.add(Undo);
-			file.add(Restart);
-			file.addSeparator();
-			file.add(newGame);
-			file.add(saveGame);
-			file.add(loadSave);
-			file.addSeparator();
-			file.add(exit);
+			g.add(ret);
+			g.add(Undo);
+			g.add(Restart);
+			g.addSeparator();
+			g.add(newGame);
+			g.add(saveGame);
+			g.add(loadSave);
+			g.addSeparator();
+			g.add(exit);
 			
 			JMenu Help = new JMenu("Help");
 			JMenuItem about = new JMenuItem("About");
@@ -354,25 +358,44 @@ public class FrontEnd extends JFrame {
 				settingsPage();
 			});
 			options.add(settings);
-			menubar.add(file);
+			
+			menubar.add(g);
 			menubar.add(options);
 			menubar.add(Help);
 			setJMenuBar(menubar);
 			
-			if(!currentGameState){
-				saveGame.setEnabled(false);  
-				ret.setEnabled(false);
-				save = saveGame;
-				returnB = ret;
-			}
+			save = saveGame;
+			returnB = ret;
+			undoB = Undo;
+			restartB = Restart;
 			
+			disableMenuItems();
+			
+		}
+		
+		public void enableMenuItems(){
+			if(currentGameState){
+				save.setEnabled(true);  
+				returnB.setEnabled(true);
+				undoB.setEnabled(true);
+				restartB.setEnabled(true);
+			}
+		}
+		
+		public void disableMenuItems(){
+			if(!currentGameState){
+				save.setEnabled(false);  
+				returnB.setEnabled(false);
+				undoB.setEnabled(false);
+				restartB.setEnabled(false);
+			}
 		}
 		
 		public void gameModePicker(){
 			
 			List<String> menu = new ArrayList<>();
 			menu.add("Solo Play");
-			menu.add("StepLimit Game");
+			menu.add("Timed Game");
 			menu.add("Co-op Game");
 			menu.add("Back");
 			MenuScreen mode = new MenuScreen(menu, false,false);
@@ -396,25 +419,56 @@ public class FrontEnd extends JFrame {
 			playMusic();
 			currentGame = grid.returnGame();
 			currentGrid = grid;
-			save.setEnabled(true);
+			
+			enableMenuItems();
 			
 		}
-	
+		
 		public void createStepLimitGameSpace(){
-
+			JPanel timedGrid = new JPanel();
+			
+			timedGrid.setLayout(new BorderLayout());
+			
+			JPanel timerPanel = new JPanel();
+			
+			timerPanel.setBackground(Color.BLACK);
+			timerPanel.setSize(new Dimension(0,35));
+			
+			
 			StepGrid grid = new StepGrid();
-			add(grid);
+			
+			JButton undo = new JButton("Undo (" + grid.undoCounter + ")" );
+			undo.addActionListener((ActionEvent event)->{
+				if(grid.undoCounter > 0){
+					grid.undo();
+					((JButton) event.getSource()).setText("Undo (" + grid.undoCounter + ")");
+				} else {
+					undo.setEnabled(false);
+				}
+			});
+			
+			JLabel stepCountRemaining = new JLabel("Steps Remaining:    " + grid.pl.steps);
+			stepCountRemaining.setForeground(Color.cyan);  //not updating.
+			grid.setTimerPanel(stepCountRemaining);
+			
+			timerPanel.add(undo, BorderLayout.CENTER);
+			timerPanel.add(stepCountRemaining);
+			timedGrid.add(timerPanel, BorderLayout.PAGE_START);
+			timedGrid.add(grid);
+			
+			add(timedGrid);
 			grid.requestFocus();
-			setContentPane(grid);
+			setContentPane(timedGrid);
 			validate();
-			setSize(new Dimension(600,600));
+			setSize(new Dimension(600,635));
+			
 			setResizable(false);
 			currentGameState = true;
 			playMusic();
 			
 			currentGame = grid.returnGame();
 			
-			save.setEnabled(true);
+			enableMenuItems();
 		}
 		
 		public void createDoubleGameSpace(){
@@ -483,24 +537,24 @@ public class FrontEnd extends JFrame {
 			LevelManager ld = new LevelManager();
 			currentGame = ld.loadGame(this);
 			
-			// Create a gamespace
-			Grid grid = new Grid(false);
-			add(grid);
-			setContentPane(grid);
-			grid.updateGrid(currentGame);
-			grid.requestFocus();
-			validate();
-			
-			// Sexify our game
-			setSize(new Dimension(600,600));
-			setResizable(false);
-			currentGameState = true;
-			playMusic();
-			
-			currentGame = grid.returnGame();
-			currentGrid = grid;
-			save.setEnabled(true);
-			 
+			if(currentGame != null){
+
+				Grid grid = new Grid(false);
+				add(grid);
+				setContentPane(grid);
+				grid.updateGrid(currentGame);
+				grid.requestFocus();
+				validate();
+				
+				setSize(new Dimension(600,600));
+				setResizable(false);
+				currentGameState = true;
+				playMusic();
+				
+				currentGame = grid.returnGame();
+				currentGrid = grid;
+				enableMenuItems();
+			} 
 			
 		}
 		
@@ -546,8 +600,27 @@ public class FrontEnd extends JFrame {
 		
 		void addInterfaceComp(Border border, Container container) {
 			JPanel comp = new JPanel(new GridLayout(1, 1), false);
-			JLabel label = new JLabel("Resolution/Maximize", JLabel.CENTER);
-			comp.add(label);
+			JLabel res = new JLabel("Resolution");
+			String[] resolutions = {"800x600", "1280×800", "1440×900", "1680×1050", "1920×1200"};
+			JComboBox resSelect = new JComboBox(resolutions);
+			
+			resSelect.addActionListener((ActionEvent event)-> {
+				
+			});
+			
+			JCheckBox fullScreen = new JCheckBox("Full Screen");
+			fullScreen.addActionListener((ActionEvent event)-> {
+				if(currentGameState){
+					setExtendedState(JFrame.MAXIMIZED_BOTH); 
+					setUndecorated(true);
+				}   //needs work.
+				
+			});
+			
+			comp.add(res);
+			comp.add(resSelect);
+			comp.add(Box.createRigidArea(new Dimension(10, 1)));
+			comp.add(fullScreen);
 			comp.setBorder(border);
 
 			container.add(Box.createRigidArea(new Dimension(0, 10)));
@@ -631,6 +704,7 @@ public class FrontEnd extends JFrame {
 					setResizable(false);
 					pack();
 					setLocationRelativeTo(null);
+					playMusic();
 					
 				} else if (purpose.equals("new")){
 					
