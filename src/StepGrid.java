@@ -8,6 +8,7 @@ import java.awt.event.KeyListener;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -22,14 +23,11 @@ public class StepGrid extends JPanel implements KeyListener{
 	GameGrid ggtemp = lm.createLevel(2);
 	Image[] myImage = new Image[14];
 	PlayerController pl = new PlayerController(gg);
-	
+	int undoCounter = 10;
+	JLabel timer;
 	
 	public StepGrid(){
-		JButton undo = new JButton("Undo");
-		undo.addActionListener((ActionEvent event)->{
-			undo();
-		});
-		add(undo);
+		
 		
 		setBounds(0,0,600,600);
 		addKeyListener(this);
@@ -51,6 +49,7 @@ public class StepGrid extends JPanel implements KeyListener{
 		}
 		
 		else{
+			undoCounter--;
 			switch(pl.backNext()){
 		case 10: pl.backRight(10, pl.backOrig(), gg);
 			break;
@@ -136,28 +135,34 @@ public class StepGrid extends JPanel implements KeyListener{
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		if(pl.steps == 50){
-			String msg = "Run out of steps!! ByeBye!";
+		if(pl.steps == 0){
+			String msg = "Limit Reached. Game Over";
 			int type = JOptionPane.DEFAULT_OPTION;
 			String title = "Die!";
 			int choice = JOptionPane.showConfirmDialog(null, msg, title, type);
 			if(choice == 0) System.exit(0);
 		}
+		
 		if(e.getKeyCode()==KeyEvent.VK_UP){
 			pl.moveUp(gg);
 			repaint();
+			updateStepsRemaining();
 		}
 		if(e.getKeyCode()==KeyEvent.VK_DOWN){
 			pl.moveDown(gg);
 			repaint();
+			updateStepsRemaining();
 		}
 		if(e.getKeyCode()==KeyEvent.VK_LEFT){
 			pl.moveLeft(gg);
 			repaint();
+			updateStepsRemaining();
 		}
+		
 		if(e.getKeyCode()==KeyEvent.VK_RIGHT){
 			pl.moveRight(gg);
 			repaint();
+			updateStepsRemaining();
 		}
 		if(pl.iswin(gg)){
 			String msg = "Congratulations, you passed level " + "2" + "!!!";
@@ -175,5 +180,13 @@ public class StepGrid extends JPanel implements KeyListener{
 		
 	}
 
+	public void setTimerPanel(JLabel stepCount){
+		timer = stepCount;
+	}
+	
+	public void updateStepsRemaining(){
+		 this.timer.setText("Steps Remaining:    " + pl.steps);
+		repaint();
+	}
 	
 }
