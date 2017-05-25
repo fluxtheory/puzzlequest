@@ -106,6 +106,7 @@ public class StepGrid extends JPanel implements KeyListener{
 			break;			
 			}
 		}
+		pl.steps--;
 		repaint();
 		this.requestFocus();	
 	}
