@@ -10,7 +10,7 @@ public class PlayerController {
 	private int manRow;
 	private int manCol;
 	private int[] player = new int[2];
-	int steps = 0;
+	int steps = 30;
 	
 	Stack<Integer> undoStackOrig = new Stack<Integer>();
 	int stackCounter = 0;
@@ -45,7 +45,7 @@ public class PlayerController {
 	 * @param gg The game grid to be modified
 	 */
 	public void moveRight(GameGrid gg){
-		steps++;
+		steps--;
 		canMove = false;
 		// Consider the next
 		if(gg.getCoordinateValue(manRow, manCol + 1) == gg.GROUND){
@@ -155,11 +155,11 @@ public class PlayerController {
 			}
 			manCol++;
 		}
-		printStack();
+		//printStack();
 	}
 	
 	public void moveLeft(GameGrid gg){
-		steps++;
+		steps--;
 		canMove = false;
 		// Consider the next
 		if(gg.getCoordinateValue(manRow, manCol - 1) == gg.GROUND){
@@ -270,7 +270,7 @@ public class PlayerController {
 	}
 	
 	public void moveUp(GameGrid gg){
-		steps++;
+		steps--;
 		canMove = false;
 		// Consider the next
 		if(gg.getCoordinateValue(manRow - 1, manCol) == gg.GROUND){
@@ -381,7 +381,7 @@ public class PlayerController {
 	}
 	
 	public void moveDown(GameGrid gg){
-		steps++;
+		steps--;
 		canMove = false;
 		// Consider the next
 		if(gg.getCoordinateValue(manRow + 1, manCol) == gg.GROUND){
