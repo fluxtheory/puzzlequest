@@ -19,8 +19,7 @@ public class Grid extends JPanel implements KeyListener{
 	
 	LevelManager lm = new LevelManager();
 	LevelManager lmtemp = new LevelManager();
-	GameGrid gg = lm.createLevel(2);
-	GameGrid ggtemp = lm.createLevel(2);
+	GameGrid gg = lm.createRandomLevel();
 	Image[] myImage = new Image[14];
 	PlayerController pl = new PlayerController(gg);
 	int undoCounter = 10;

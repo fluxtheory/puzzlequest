@@ -50,6 +50,11 @@ public class LevelManager {
 		return gg;
 	}	
 	
+	public GameGrid createRandomLevel(){
+		RandomLevel rl = new RandomLevel();
+		return rl.getRandomLevel();
+	}
+	
 	/**
 	 * loadGame loads a save file into the gamegrid.
 	 * Saves are loaded from "saves/*.sav"
