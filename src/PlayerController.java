@@ -10,7 +10,7 @@ public class PlayerController {
 	private int manRow;
 	private int manCol;
 	private int[] player = new int[2];
-	int steps = 30;
+	int steps = 55;
 	
 	Stack<Integer> undoStackOrig = new Stack<Integer>();
 	int stackCounter = 0;
