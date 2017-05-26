@@ -14,7 +14,7 @@ import javax.swing.JPanel;
 
 
 	
-public class Grid extends JPanel implements KeyListener{
+public class GridUI extends JPanel implements KeyListener{
 
 	
 	LevelManager lm = new LevelManager();
@@ -27,7 +27,7 @@ public class Grid extends JPanel implements KeyListener{
 	int playerID;
 	
 	
-	public Grid(boolean _secondary){
+	public GridUI(boolean _secondary){
 		secondary = _secondary; //second panel for coop double games
 		
 		if(secondary){
