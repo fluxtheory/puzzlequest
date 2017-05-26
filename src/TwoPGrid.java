@@ -11,15 +11,15 @@ import javax.swing.JPanel;
 
 public class TwoPGrid extends JPanel implements KeyListener{
 
-	private Grid Player1;
-	private Grid Player2;
+	private GridUI Player1;
+	private GridUI Player2;
 	
 	public TwoPGrid(){
 		setBackground(Color.BLACK);
 		setBounds(0,0,1410,600);
 		setLayout(new GridLayout(1,2));
-		Player1 = new Grid(false);   //remove the buttons!
-		Player2 = new Grid(true);
+		Player1 = new GridUI(false);   //remove the buttons!
+		Player2 = new GridUI(true);
 		add(Player1);
 		add(Player2);
 		
@@ -36,11 +36,7 @@ public class TwoPGrid extends JPanel implements KeyListener{
 			}
 		}
 		
-		/*for(int i = 0; i < 20; i++){
-			for(int j = 0; j < 20; j++){
-				g.drawImage(Player2.myImage[Player2.gg.getGrid().get(j).get(i)], (i)*30, j*30, this);
-			}
-		}*/
+
 	}
 
 
