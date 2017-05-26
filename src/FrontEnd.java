@@ -45,7 +45,7 @@ public class FrontEnd extends JFrame {
 	private static int lastInt;
 	private boolean currentGameState;
 	private GameGrid currentGame;
-	private Grid currentGrid;
+	private GridUI currentGrid;
 	private JMenuItem save;
 	private JMenuItem returnB;
 	private JMenuItem restartB;
@@ -408,7 +408,7 @@ public class FrontEnd extends JFrame {
 		
 		public void createSingleGameSpace(){
 
-			Grid grid = new Grid(false);
+			GridUI grid = new GridUI(false);
 			add(grid);
 			grid.requestFocus();
 			setContentPane(grid);
@@ -509,9 +509,9 @@ public class FrontEnd extends JFrame {
 	        BorderComp.setBorder(paneEdge);
 	        BorderComp.setLayout(new BoxLayout(BorderComp, BoxLayout.Y_AXIS));
 	        
-	        addInterfaceComp(ginterface, BorderComp);
+	       // addInterfaceComp(ginterface, BorderComp);
 	        addAudioComp(audio, BorderComp);
-	        addGameSettComp(game, BorderComp);
+	        //addGameSettComp(game, BorderComp);
 	        
 	        setting.setContentPane(BorderComp);
 	        setting.pack();
@@ -540,7 +540,7 @@ public class FrontEnd extends JFrame {
 			
 			if(currentGame != null){
 
-				Grid grid = new Grid(false);
+				GridUI grid = new GridUI(false);
 				add(grid);
 				setContentPane(grid);
 				grid.updateGrid(currentGame);
