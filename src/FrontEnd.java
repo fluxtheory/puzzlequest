@@ -50,6 +50,7 @@ public class FrontEnd extends JFrame {
 	private JMenuItem returnB;
 	private JMenuItem restartB;
 	private JMenuItem undoB;
+   	private MenuScreen mode;
 	public MediaPlayer m;
 	
 	
@@ -168,11 +169,11 @@ public class FrontEnd extends JFrame {
 	                    		
 	                    	} else if(newItem == "Back"){
 	                    		setResizable(true);
-	        			setPreferredSize(homePanel.getPreferredSize());
-	        			setContentPane(homePanel);
-	        			setResizable(false);
-	        			setLocationRelativeTo(null);
-	        			pack();
+			        			setPreferredSize(homePanel.getPreferredSize());
+			        			setContentPane(homePanel);
+			        			setResizable(false);
+			        			setLocationRelativeTo(null);
+			        			pack();
 	                    		
 	                    	}
 	                        
@@ -207,6 +208,10 @@ public class FrontEnd extends JFrame {
 	        }
 	}
 	
+		public void setNewMenuItems(List<String> _menuItems){
+			menuItems = _menuItems;
+		}
+		
 		/*@Override
 	    public void invalidate() {
 	        menuButtons = null;
@@ -392,17 +397,30 @@ public class FrontEnd extends JFrame {
 		}
 		
 		public void gameModePicker(){
-			
-			List<String> menu = new ArrayList<>();
-			menu.add("Solo Play");
-			menu.add("Timed Game");
-			menu.add("Co-op Game");
-			menu.add("Back");
-			MenuScreen mode = new MenuScreen(menu, false,false);
-			add(mode);
-			setContentPane(mode);
-			validate();
-			returnB.setEnabled(true);
+			if(!currentGameState){
+				List<String> menu = new ArrayList<>();
+				menu.add("Solo Play");
+				menu.add("Timed Game");
+				menu.add("Co-op Game");
+				menu.add("Back");
+				mode = new MenuScreen(menu, false,false);
+				add(mode);
+				setContentPane(mode);
+				validate();
+				returnB.setEnabled(true);
+			}else{
+				currentGameState=!currentGameState;
+				List<String> menu = new ArrayList<>();
+				menu.add("Solo Play");
+				menu.add("Timed Game");
+				menu.add("Co-op Game");
+				menu.add("Back");
+				mode.setNewMenuItems(menu);
+				add(mode);
+				setContentPane(mode);
+				validate();
+				returnB.setEnabled(true);
+			}
 
 		}
 		
@@ -708,7 +726,13 @@ public class FrontEnd extends JFrame {
 					playMusic();
 					
 				} else if (purpose.equals("new")){
-					
+					setResizable(true);
+					setPreferredSize(homePanel.getPreferredSize());
+					setContentPane(homePanel);
+					setResizable(false);
+					setLocationRelativeTo(null);
+					pack();
+					playMusic();
 					gameModePicker(); //errors.
 					
 				} else if (purpose.equals("load")){
