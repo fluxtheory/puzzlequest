@@ -413,7 +413,7 @@ public class FrontEnd extends JFrame {
 			grid.requestFocus();
 			setContentPane(grid);
 			validate();
-			setSize(new Dimension(600,600));
+			setSize(new Dimension(600,645));
 			setResizable(false);
 			currentGameState = true;
 			playMusic();
@@ -444,6 +444,7 @@ public class FrontEnd extends JFrame {
 					((JButton) event.getSource()).setText("Undo (" + grid.undoCounter + ")");
 				} else {
 					undo.setEnabled(false);
+					grid.requestFocus();
 				}
 			});
 			
@@ -460,7 +461,7 @@ public class FrontEnd extends JFrame {
 			grid.requestFocus();
 			setContentPane(timedGrid);
 			validate();
-			setSize(new Dimension(600,635));
+			setSize(new Dimension(600,700));
 			
 			setResizable(false);
 			currentGameState = true;
