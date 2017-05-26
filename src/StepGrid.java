@@ -1,13 +1,9 @@
-import java.awt.Color;
+
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.ArrayList;
-
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -18,9 +14,7 @@ public class StepGrid extends JPanel implements KeyListener{
 
 	
 	LevelManager lm = new LevelManager();
-	LevelManager lmtemp = new LevelManager();
-	GameGrid gg = lm.createLevel(2);
-	GameGrid ggtemp = lm.createLevel(2);
+	GameGrid gg = lm.createLevel(1);
 	Image[] myImage = new Image[14];
 	PlayerController pl = new PlayerController(gg);
 	int undoCounter = 10;
@@ -41,7 +35,9 @@ public class StepGrid extends JPanel implements KeyListener{
 		gg = gameGrid;
 		pl = new PlayerController(gg);
 	}
-	
+	public int returnUndoCounter(){
+		return undoCounter;
+	}
 	
 	public void undo(){
 		if(pl.getUndoStackNext().isEmpty()){
@@ -105,7 +101,8 @@ public class StepGrid extends JPanel implements KeyListener{
 			break;			
 			}
 		}
-		pl.steps--;
+		pl.steps++;
+		updateStepsRemaining();
 		repaint();
 		this.requestFocus();	
 	}
@@ -165,7 +162,7 @@ public class StepGrid extends JPanel implements KeyListener{
 			updateStepsRemaining();
 		}
 		if(pl.iswin(gg)){
-			String msg = "Congratulations, you passed level " + "2" + "!!!";
+			String msg = "Congratulations, you passed!!!";
 			int type = JOptionPane.DEFAULT_OPTION;
 			String title = "Pass";
 			int choice = JOptionPane.showConfirmDialog(null, msg, title, type);
